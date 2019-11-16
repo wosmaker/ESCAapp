@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ESCAapp</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="title_activity_random">Random</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_first_fragment">FirstFragment</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+
+    <string name="b_nav_profile">Profile</string>
+    <string name="b_nav_find_location">Find location</string>
+    <string name="b_nav_emergency_list">Emergency List</string>
+    <string name="b_nav_management">Management</string>
+    <string name="b_nav_setting">Setting</string>
+    <string name="title_activity_nav_botton">nav_botton</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main_app">MainAppActivity</string>
+    <string name="title_activity_first_time">FirstTime</string>
+</resources>
