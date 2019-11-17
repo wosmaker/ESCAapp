@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.preference.PreferenceFragmentCompat
 import com.app.escaapp.R
 import kotlinx.android.synthetic.main.fragment_location.view.*
 import kotlinx.android.synthetic.main.fragment_setting.view.*
@@ -21,8 +22,6 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_setting, container, false)
-
-        view.textView.text = "Hello world setting page"
 
         return view
     }

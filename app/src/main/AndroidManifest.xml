@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".MainActivity"
+            android:label="MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".FirstTime"
             android:label="@string/title_activity_first_time"
             android:theme="@style/AppTheme.NoActionBar">
@@ -31,40 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".nav_botton"
-            android:label="@string/title_activity_nav_botton" />
-        <activity android:name=".SettingActivity" />
-        <activity
-            android:name=".FirstFragment"
-            android:label="@string/title_activity_first_fragment"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".Random"
-            android:label="@string/title_activity_random"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EnterActivity" />
-        <activity android:name=".InformationActivity" />
-        <activity
-            android:name=".ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

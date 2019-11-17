@@ -15,10 +15,9 @@ class FirstTime : AppCompatActivity() {
         setContentView(R.layout.activity_first_time)
 
         bt_begin_now.setOnClickListener {
-            var intent = Intent(this, MainAppActivity::class.java)
+            val intent = Intent(this, MainAppActivity::class.java)
             startActivity(intent)
         }
-
     }
 
 }
