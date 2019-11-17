@@ -1,5 +1,7 @@
 package com.app.escaapp
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
@@ -20,6 +22,11 @@ class MainAppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_app)
+
+        val spName = "App_config"
+        val sp: SharedPreferences = getSharedPreferences(spName, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sp.edit()
+
         init()
         navbar_action()
 
@@ -98,7 +105,7 @@ class MainAppActivity : AppCompatActivity() {
 
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.nav_host_fragment, SettingsPreference())
+                .replace(R.id.nav_host_fragment, SettingFragment())
                 //.addToBackStack(null)
                 .commit()
         }

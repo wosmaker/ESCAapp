@@ -4,12 +4,239 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.setting.SettingFragment" >
+    tools:context=".ui.setting.SettingFragment">
 
-    <FrameLayout
-        android:id="@+id/setting"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <LinearLayout
+                android:id="@+id/la_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="230dp"
+                android:layout_marginBottom="90dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Settings"
+                    android:textAlignment="center"
+                    android:textColor="@color/s_text"
+                    android:textSize="60sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/la_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/radius"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="Location send"
+                    android:textColor="@color/s_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/sw_gpsTrack"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="Gps tracking"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+                <Switch
+                    android:id="@+id/sw_gpsServer"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="Send location via Server"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+
+                <Switch
+                    android:id="@+id/sw_gpsSMS"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="Send location via SMS"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/la_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/radius"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="Call History setup"
+                    android:textColor="@color/s_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/sw_recordCallHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="Record Call History"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+                <Switch
+                    android:id="@+id/sw_backupCallHistoryServer"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="Backup Call History to Server"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/la_4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/radius"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="User Contact setup"
+                    android:textColor="@color/s_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/sw_backupUserContactServer"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="Backup User Contact to server"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/la_5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/radius"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="background app setup"
+                    android:textColor="@color/s_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/sw_startUpOnBoot"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="Start up on boot"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+                <Switch
+                    android:id="@+id/sw_runBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="Run in Background"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/la_5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/radius"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/more_UserManual"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="User Manual"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/more_About_Application"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:paddingLeft="10dp"
+                    android:text="About Application"
+                    android:textColor="@color/s_text"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

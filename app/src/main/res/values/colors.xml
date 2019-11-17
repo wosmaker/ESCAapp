@@ -6,5 +6,7 @@
 
     <color name="bg_app">#0B2632</color>
     <color name="bg_buttonbar">#1D2939</color>
+
+    <color name="s_text">#FFFFFFFF</color>
     
 </resources>
