@@ -7,9 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.app.escaapp.R
 import kotlinx.android.synthetic.main.fragment_setting.view.*
-
+import java.util.jar.Manifest
 
 
 class SettingFragment : Fragment() {
@@ -25,7 +26,7 @@ class SettingFragment : Fragment() {
      override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
           val sp:SharedPreferences? = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)
           val editor: SharedPreferences.Editor? = sp?.edit()
-
+         
 
          view.sw_gpsTrack.setOnCheckedChangeListener { _, isChecked ->  editor!!.putBoolean("gpsTrack",isChecked).commit()}
          view.sw_gpsServer.setOnCheckedChangeListener{_,isChecked -> editor!!.putBoolean("gpsServer",isChecked).commit()}

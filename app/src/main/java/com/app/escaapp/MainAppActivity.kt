@@ -1,11 +1,16 @@
 package com.app.escaapp
 
+import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.app.escaapp.ui.emergency.EmergencyFragment
@@ -27,9 +32,22 @@ class MainAppActivity : AppCompatActivity() {
         val sp: SharedPreferences = getSharedPreferences(spName, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sp.edit()
 
+        permissionAsk()
+
         init()
         navbar_action()
+    }
 
+    private  fun permissionAsk(){
+        ActivityCompat.requestPermissions(this,
+            arrayOf(
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),12)
     }
 
     private fun navbar_show(args:Int){
@@ -98,6 +116,7 @@ class MainAppActivity : AppCompatActivity() {
                 .replace(R.id.nav_host_fragment,ManageFragment())
                 //.addToBackStack(null)
                 .commit()
+
         }
 
         nav_setting.setOnClickListener {
