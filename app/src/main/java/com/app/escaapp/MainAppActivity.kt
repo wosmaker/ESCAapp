@@ -2,11 +2,11 @@ package com.app.escaapp
 
 import android.Manifest
 import android.content.Context
+import android.content.IntentSender
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
+import android.os.Looper
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 
@@ -16,7 +16,6 @@ import com.app.escaapp.ui.manage.ManageFragment
 import com.app.escaapp.ui.profile.ProfileFragment
 import com.app.escaapp.ui.setting.SettingFragment
 
-import kotlinx.android.synthetic.main.activity_main_app.*
 import kotlinx.android.synthetic.main.navbar_botton.*
 
 class MainAppActivity : AppCompatActivity() {

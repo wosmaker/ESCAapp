@@ -24,3 +24,9 @@ local.properties
 *.iml
 
 .gradle/5.4.1/javaCompile/
+
+.gradle/5.4.1/executionHistory/
+
+.gradle/5.4.1/fileHashes/
+
+.gradle/buildOutputCleanup/
