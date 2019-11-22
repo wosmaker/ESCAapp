@@ -6,15 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
 import com.app.escaapp.R
-import com.app.escaapp.ui.emergency.EmergencyFragment
-import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.fragment_manage.view.*
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class ManageFragment : Fragment() {
+
+    private lateinit var viewModel: MangeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,6 +26,11 @@ class ManageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         when_edit_cancel(view)
         add_contact(view)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(MangeViewModel::class.java)
     }
 
 
