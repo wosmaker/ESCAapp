@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/radius"
+        app:srcCompat="@drawable/block1"
         tools:visibility="visible" />
 
     <TextView
@@ -30,7 +30,7 @@
         android:layout_marginTop="56dp"
         android:allowUndo="false"
         android:fontFamily="@font/roboto_light"
-        android:text="management"
+        android:text="@string/b_nav_management"
         android:textAlignment="center"
         android:textColor="#FDFDFD"
         android:textSize="40sp"
@@ -40,13 +40,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:id="@+id/Add"
+        android:id="@+id/edit_but"
+        android:layout_width="51dp"
+        android:layout_height="28dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/rounden_button"
+        android:fontFamily="@font/roboto_light"
+        android:text="Edit"
+        android:textColor="#FFFFFF"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/home"
+        android:layout_width="29dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/home"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/add"
         android:layout_width="23dp"
         android:layout_height="19dp"
         android:layout_marginTop="148dp"
         android:layout_marginEnd="168dp"
-        android:background="@drawable/radius"
+        android:background="@drawable/add"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/block1"
         app:layout_constraintTop_toTopOf="@+id/block1" />
@@ -62,7 +88,7 @@
         android:contextClickable="true"
         android:fontFamily="@font/roboto_light"
         android:text="Done"
-        android:textColor="#4694C0"
+        android:textColor="#42BAFD"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="invisible"
@@ -70,20 +96,6 @@
         app:layout_constraintStart_toEndOf="@+id/Cancel"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.464" />
-
-    <Button
-        android:id="@+id/Edit"
-        android:layout_width="51dp"
-        android:layout_height="28dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/radius"
-        android:fontFamily="@font/roboto_light"
-        android:text="Edit"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/Cancel"

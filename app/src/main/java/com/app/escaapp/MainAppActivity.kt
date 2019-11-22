@@ -4,14 +4,12 @@ import android.Manifest
 import android.content.Context
 import android.content.IntentSender
 import android.content.SharedPreferences
-import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+
 import com.app.escaapp.ui.emergency.EmergencyFragment
 import com.app.escaapp.ui.location.LocationFragment
 import com.app.escaapp.ui.manage.ManageFragment

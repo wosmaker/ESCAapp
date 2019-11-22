@@ -8,5 +8,6 @@
     <color name="bg_buttonbar">#1D2939</color>
 
     <color name="s_text">#FFFFFFFF</color>
+    <color name="rounded">#254355</color>
     
 </resources>
