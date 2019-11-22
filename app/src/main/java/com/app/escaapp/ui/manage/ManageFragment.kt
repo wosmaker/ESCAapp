@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.app.escaapp.R
+import com.app.escaapp.ui.emergency.EmergencyFragment
+import kotlinx.android.synthetic.main.fragment_manage.*
+import kotlinx.android.synthetic.main.fragment_manage.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -18,10 +21,54 @@ class ManageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_manage, container, false)
+        return inflater.inflate(R.layout.fragment_manage, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        when_edit_cancel(view)
+        add_contact(view)
+    }
 
 
-        return view
+    private fun when_edit_cancel(view:View){
+        view.Edit.setOnClickListener {
+            view.Cancel.visibility = View.VISIBLE
+            view.Done.visibility = View.VISIBLE
+            view.Add.visibility = View.VISIBLE
+
+            view.Edit.visibility = View.INVISIBLE
+        }
+
+        view.Cancel.setOnClickListener{
+            view.Edit.visibility = View.VISIBLE
+
+            view.Cancel.visibility = View.INVISIBLE
+            view.Done.visibility = View.INVISIBLE
+            view.Add.visibility = View.INVISIBLE
+            // Do action here
+
+        }
+
+        view.Done.setOnClickListener{
+            view.Edit.visibility = View.VISIBLE
+
+            view.Cancel.visibility = View.INVISIBLE
+            view.Done.visibility = View.INVISIBLE
+            view.Add.visibility = View.INVISIBLE
+            // Do action here
+
+        }
+    }
+
+
+    private fun add_contact(view:View){
+        view.Add.setOnClickListener{
+            activity!!.supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment, ManageFragment_contact())
+                //.addToBackStack(null)
+                .commit()
+        }
     }
 
 
