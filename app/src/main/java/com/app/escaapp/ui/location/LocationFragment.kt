@@ -66,7 +66,6 @@ class LocationFragment : Fragment() , OnMapReadyCallback {
         try {
 
 
-
             mFusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
             mSettingsClient = LocationServices.getSettingsClient(activity!!)
             // Kick off the process of building the LocationCallback, LocationRequest, and
