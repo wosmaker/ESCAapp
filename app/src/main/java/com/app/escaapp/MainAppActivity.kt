@@ -20,11 +20,6 @@ import kotlinx.android.synthetic.main.navbar_botton.*
 
 class MainAppActivity : AppCompatActivity() {
 
-
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_app)
@@ -37,17 +32,7 @@ class MainAppActivity : AppCompatActivity() {
 
         init()
         navbar_action()
-
-
-
-
     }
-
-
-
-
-
-
 
     private  fun permissionAsk(){
         ActivityCompat.requestPermissions(this,
