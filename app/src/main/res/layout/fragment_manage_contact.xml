@@ -76,7 +76,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:translationX="470px"
-            android:translationY="-840px" />
+            android:translationY="-840px"
+            android:autofillHints="" />
 
         <EditText
             android:id="@+id/phone"

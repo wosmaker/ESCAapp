@@ -6,23 +6,28 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.management.UserModel
 import com.example.management.UsersDBHelper
+import kotlinx.android.synthetic.main.fragment_manage_contact.*
 import kotlinx.android.synthetic.main.fragment_manage_fragment_contact.*
+import kotlinx.android.synthetic.main.fragment_manage_fragment_contact.cancel_in
+import kotlinx.android.synthetic.main.fragment_manage_fragment_contact.done_pop
+import java.lang.Exception
 
 class contact : AppCompatActivity() {
 
-    lateinit var usersDBHelper : UsersDBHelper
+    lateinit var db : UsersDBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_manage_contact)
         cancel_input()
         done_input()
+        db = UsersDBHelper(this)
+
 
     }
 
     fun cancel_input(){
         cancel_in.setOnClickListener{
-            var intent = Intent(this,MainContactActivity::class.java)
 
             //          //confirm_field.visibility=View.VISIBLE
             //            // discard_in.visibility=View.VISIBLE
@@ -37,24 +42,33 @@ class contact : AppCompatActivity() {
                 save_in.visibility=View.INVISIBLE
             }*/
 
+            var intent = Intent(this,MainContactActivity::class.java)
             startActivity(intent)
         }
     }
 
     fun done_input(){
         done_pop.setOnClickListener {
-            var intent = Intent(this,MainContactActivity::class.java)
             add_contact()
-            startActivity(intent)
+            var intent = Intent(this,MainContactActivity::class.java)
+            //startActivity(intent)
         }
     }
 
     fun add_contact(){
-        var name = relate_name.text.toString()
-        var phone = relate_phone.text.toString()
-        var relation = relationship.text.toString()
-        var result = usersDBHelper.insertUser(UserModel(1,relate_name = name,phone_no = phone,relation = relation))
-        Toast.makeText(applicationContext,"Added user : "+result,Toast.LENGTH_LONG)
+
+        var _name = name.text.toString()
+        var _phone = phone.text.toString()
+        var _relate = relate.text.toString()
+        try {
+            val result = db.addUser(UserModel(1,_name,_phone,_relate))
+            Toast.makeText(this,"Added user : "+ result ,Toast.LENGTH_LONG).show()
+        }
+        catch (e: Exception){
+            Toast.makeText(this,"Error  : $e"  ,Toast.LENGTH_LONG).show()
+            new_Contact.text = e.toString()
+        }
+
     }
 
 }

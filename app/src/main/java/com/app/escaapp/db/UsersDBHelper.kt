@@ -23,7 +23,7 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         const val phone_no = "phone_no"
         const val relation = "relation"
 
-        const val Tb_user = "create table $table_name ($id integer primary key, $relate_name varchar, $phone_no varchar, $relation varchar"
+        const val Tb_user = "create table $table_name ($id integer primary key autoincrement not null, $relate_name text, $phone_no text, $relation text)"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -37,12 +37,11 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
     fun addUser(user : UserModel):Boolean{
         val db = writableDatabase
         val values = ContentValues()
-        values.put(id,user.id)
         values.put(relate_name,user.relate_name)
         values.put(phone_no,user.phone_no)
         values.put(relation,user.relation)
         val rowId = db.insert(table_name,null,values)
-
+        db.close()
         return (Integer.parseInt("$rowId") != -1)
     }
 
@@ -51,7 +50,7 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         val sel = "$id like ?"
         val selectArgs = arrayOf(userid.toString())
         val rowId = db.delete(table_name,sel,selectArgs)
-
+        db.close()
         return (Integer.parseInt("$rowId") != -1)
     }
 
@@ -69,6 +68,8 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
                 user.add(UserModel(userid,_name,_phone,_relation))
             }while (cursor.moveToNext())
         }
+        cursor.close()
+        db.close()
         return user
     }
 
@@ -86,6 +87,9 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
                 users.add(UserModel(_userId,_name,_phone,_relation))
             }while(cursor.moveToNext())
         }
+
+        cursor.close()
+        db.close()
         return users
     }
 }
