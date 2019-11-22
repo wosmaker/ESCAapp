@@ -3,16 +3,13 @@ package com.app.escaapp
 import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+
 import com.app.escaapp.ui.emergency.EmergencyFragment
 import com.app.escaapp.ui.location.LocationFragment
 import com.app.escaapp.ui.manage.ManageFragment

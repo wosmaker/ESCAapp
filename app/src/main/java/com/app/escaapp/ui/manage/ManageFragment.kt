@@ -24,15 +24,17 @@ class ManageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+       /*
         when_edit_cancel(view)
         add_contact(view)
+        */
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MangeViewModel::class.java)
     }
-
+/*
 
     private fun when_edit_cancel(view:View){
         view.Edit.setOnClickListener {
@@ -74,6 +76,6 @@ class ManageFragment : Fragment() {
                 .commit()
         }
     }
-
+*/
 
 }
