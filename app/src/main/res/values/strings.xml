@@ -88,5 +88,6 @@
     <string name="title_terms">Terms &amp; Conditions</string>
     <string name="url_terms">https://github.com/manit123001</string>
     <string name="text_menu_setting">Settings</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

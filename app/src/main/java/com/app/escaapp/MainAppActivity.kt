@@ -70,10 +70,11 @@ class MainAppActivity : AppCompatActivity() {
     private fun init() {
         navbar_show(2)
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.nav_host_fragment,EmergencyFragment())
-        //.addToBackStack(null)
-        transaction.commit()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.nav_host_fragment,EmergencyFragment())
+            //.addToBackStack(null)
+            .commit()
     }
 
     private fun navbar_action(){
@@ -130,20 +131,5 @@ class MainAppActivity : AppCompatActivity() {
         }
     }
 
-    class SettingsPreference : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey)
-
-            val signature = findPreference<Preference>("signature")
-            val sync = findPreference<Preference>("sync")
-
-
-            signature?.setOnPreferenceClickListener {
-                Toast.makeText(activity, "signature on clicked", Toast.LENGTH_SHORT).show()
-                return@setOnPreferenceClickListener true
-            }
-
-        }
-    }
 
 }
