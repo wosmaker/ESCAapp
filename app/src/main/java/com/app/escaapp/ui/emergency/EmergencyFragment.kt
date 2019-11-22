@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.app.escaapp.R
+import kotlinx.android.synthetic.main.fragment_emergency.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -21,6 +22,10 @@ class EmergencyFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_emergency, container, false)
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        view.test1.text = "Hello Emergency"
     }
 
 }
