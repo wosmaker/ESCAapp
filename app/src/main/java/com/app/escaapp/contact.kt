@@ -1,4 +1,3 @@
-            var result = usersDBHelper.insertUser(UserModel(1,relate_name = _name,phone_no = _phone,relation = _relate))
 package com.app.escaapp
 
 import android.content.Intent

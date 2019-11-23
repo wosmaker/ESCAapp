@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import java.util.*
 
+data class callModel (val id: Int, val name: String = "", val phone_no: String = "")
 
 class DB_callList(context : Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -21,7 +22,7 @@ class DB_callList(context : Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         const val phone = "phone_Number"
 
         private val Tb_callList =
-            "CREATE TABLE $table_name ($id INTEGER PRIMARY KEY, $name VARCHAR , $phone INTEGER )"
+            "CREATE TABLE $table_name ($id integer primary key autoincrement not null, $name varchar not null , $phone number not null )"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -29,11 +30,16 @@ class DB_callList(context : Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         db?.execSQL(Tb_callList)
     }
 
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     fun addContact():Boolean{
         val db = writableDatabase
         val values = ContentValues()
 
         val _success = db.insert(table_name,null,values)
+        db.close()
         Log.v("InsertedId","$_success")
         return (Integer.parseInt("$_success") != -1)
     }
@@ -54,5 +60,4 @@ class DB_callList(context : Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         db.close()
         return all
     }
-
 }
