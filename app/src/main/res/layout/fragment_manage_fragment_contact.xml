@@ -102,16 +102,17 @@
         android:translationY="-530px" />
 
     <ImageView
-        android:id="@+id/confirm_field"
+        android:id="@+id/confirm_field_pop"
         android:layout_width="334dp"
         android:layout_height="149dp"
         android:background="@drawable/confirm"
         android:translationX="100px"
         android:translationY="-1060px"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        />
 
     <Button
-        android:id="@+id/save_in"
+        android:id="@+id/save_in_pop"
         android:layout_width="110dp"
         android:layout_height="34dp"
         android:background="@drawable/no"
@@ -120,7 +121,7 @@
         android:visibility="invisible" />
 
     <Button
-        android:id="@+id/discard_in"
+        android:id="@+id/discard_in_pop"
         android:layout_width="110dp"
         android:layout_height="34dp"
         android:background="@drawable/discard"
