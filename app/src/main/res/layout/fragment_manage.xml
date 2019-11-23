@@ -45,7 +45,6 @@
         android:id="@+id/edit_but"
         android:layout_width="51dp"
         android:layout_height="28dp"
-        android:layout_marginBottom="40dp"
         android:background="@drawable/rounden_button"
         android:fontFamily="@font/roboto_light"
         android:text="Edit"
@@ -54,17 +53,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/home"
-        android:layout_width="29dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="76dp"
-        android:background="@drawable/home"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/block1"
+        app:layout_constraintVertical_bias="0.713" />
 
     <Button
         android:id="@+id/add"
