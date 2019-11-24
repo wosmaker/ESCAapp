@@ -37,15 +37,15 @@
         <action
             android:id="@+id/action_profile_location"
             app:destination="@id/Location"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Profile" />
         <action
             android:id="@+id/action_profile_manage"
             app:destination="@+id/Manage"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Profile" />
         <action
             android:id="@+id/action_profile_setting"
             app:destination="@id/Setting"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Profile" />
     </navigation>
     <navigation
         android:id="@+id/Setting"
@@ -59,15 +59,15 @@
         <action
             android:id="@+id/action_setting_manage"
             app:destination="@id/Manage"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Setting" />
         <action
             android:id="@+id/action_setting_profile"
             app:destination="@id/Profile"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Setting" />
         <action
             android:id="@+id/action_setting_location"
             app:destination="@id/Location"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Setting" />
     </navigation>
     <navigation
         android:id="@+id/Location"
@@ -80,34 +80,34 @@
         <action
             android:id="@+id/action_location_profile"
             app:destination="@id/Profile"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Location" />
         <action
             android:id="@+id/action_location_manage"
             app:destination="@id/Manage"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Location" />
         <action
             android:id="@+id/action_location_setting"
             app:destination="@id/Setting"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Location" />
     </navigation>
     <navigation
         android:id="@+id/Manage"
-        app:startDestination="@id/manageFragment" >
-        <fragment
-            android:id="@+id/manageFragment"
-            android:name="com.app.escaapp.ui.manage.ManageFragment"
-            android:label="ManageFragment"/>
+        app:startDestination="@id/manageFragment">
         <action
             android:id="@+id/action_manage_location"
             app:destination="@id/Location"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Manage" />
         <action
             android:id="@+id/action_mange_profile"
             app:destination="@id/Profile"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Manage" />
         <action
             android:id="@+id/action_mange_setting"
             app:destination="@id/Setting"
-            app:popUpTo="@+id/Emergency" />
+            app:popUpTo="@+id/Manage" />
+        <fragment
+            android:id="@+id/manageFragment"
+            android:name="com.app.escaapp.ui.manage.ManageFragment"
+            android:label="ManageFragment" />
     </navigation>
 </navigation>
