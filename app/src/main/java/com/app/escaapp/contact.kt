@@ -2,6 +2,7 @@ package com.app.escaapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.management.UserModel
@@ -16,6 +17,7 @@ class contact : AppCompatActivity() {
 
     lateinit var db : UsersDBHelper
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_manage_contact)
@@ -29,9 +31,9 @@ class contact : AppCompatActivity() {
     fun cancel_input(){
         cancel_in.setOnClickListener{
 
-            //          //confirm_field.visibility=View.VISIBLE
-            //            // discard_in.visibility=View.VISIBLE
-            //            //save_in.visibility=View.VISIBLE
+            //confirm_field_pop.visibility= View.VISIBLE
+            //discard_in_pop.visibility=View.VISIBLE
+            //save_in_pop.visibility=View.VISIBLE
 
             /*discard_in.setOnClickListener {
                 startActivity(intent_in)
@@ -51,7 +53,7 @@ class contact : AppCompatActivity() {
         done_pop.setOnClickListener {
             add_contact()
             var intent = Intent(this,MainContactActivity::class.java)
-            //startActivity(intent)
+            startActivity(intent)
         }
     }
 
