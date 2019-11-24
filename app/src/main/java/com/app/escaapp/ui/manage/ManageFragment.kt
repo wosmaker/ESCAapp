@@ -15,7 +15,7 @@ import com.app.escaapp.R
 import kotlinx.android.synthetic.main.fragment_manage.view.*
 
 
-class ManageFragment : Fragment(), IOBackPressed {
+class ManageFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,16 +30,12 @@ class ManageFragment : Fragment(), IOBackPressed {
         Edit_state(view)
     }
 
-    override fun onBackPressed(): Boolean {
-
-    }
 
     private fun Edit_state(view:View){
         view.Edit.setOnClickListener {Start_Anime(view)}
         view.Cancel.setOnClickListener{End_Anime(view)}
         view.Done.setOnClickListener{End_Anime((view))}
         view.Add.setOnClickListener {
-            view.findNavController().navigate()
 
         }
     }

@@ -35,13 +35,17 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
         values.put(latitude,model.latitude)
         values.put(longitude,model.longitude)
 
-        writableDatabase.insert(table_name,null,values)
+        val success = writableDatabase.insert(table_name,null,values)
+        return (Integer.parseInt("$success") != -1)
+
     }
 
     fun deleteLocation(locationId : String):Boolean{
         val select = "$id like ?"
         val selectArgs = arrayOf(locationId)
-        writableDatabase.delete(table_name,select,selectArgs)
+        val success = writableDatabase.delete(table_name,select,selectArgs)
+        return (Integer.parseInt("$success") != -1)
+
     }
 
     fun getLocationAll():ArrayList<LocationModel>{
