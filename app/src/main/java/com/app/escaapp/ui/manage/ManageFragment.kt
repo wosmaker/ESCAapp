@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.core.view.marginTop
+import androidx.navigation.findNavController
+import com.app.escaapp.IOBackPressed
 import com.app.escaapp.NavBar
 import com.app.escaapp.R
 import kotlinx.android.synthetic.main.fragment_manage.view.*
 
 
-class ManageFragment : Fragment() {
+class ManageFragment : Fragment(), IOBackPressed {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +28,9 @@ class ManageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         NavBar().setGo(3, view)
         Edit_state(view)
+    }
 
+    override fun onBackPressed(): Boolean {
 
     }
 
@@ -35,7 +39,7 @@ class ManageFragment : Fragment() {
         view.Cancel.setOnClickListener{End_Anime(view)}
         view.Done.setOnClickListener{End_Anime((view))}
         view.Add.setOnClickListener {
-            view.
+            view.findNavController().navigate()
 
         }
     }
@@ -78,6 +82,7 @@ class ManageFragment : Fragment() {
         view.Done.visibility = View.INVISIBLE
         view.Add.visibility = View.INVISIBLE
     }
+
 
 
 }

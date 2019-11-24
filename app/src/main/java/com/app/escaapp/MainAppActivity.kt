@@ -18,6 +18,11 @@ import com.app.escaapp.ui.setting.SettingFragment
 
 import kotlinx.android.synthetic.main.navbar_botton.*
 
+
+interface IOBackPressed{
+    fun onBackPressed() : Boolean
+}
+
 class MainAppActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +33,11 @@ class MainAppActivity : AppCompatActivity() {
         val sp: SharedPreferences = getSharedPreferences(spName, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sp.edit()
         permissionAsk()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
     }
 
     private  fun permissionAsk(){
@@ -41,4 +51,6 @@ class MainAppActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ),12)
     }
+
+
 }

@@ -9,7 +9,7 @@ import com.app.escaapp.R
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.fragment_manage.view.*
 
-class ManageFragment_contact : Fragment() {
+class Add_Contact : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
