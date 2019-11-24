@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import com.app.escaapp.NavBar
 import com.app.escaapp.R
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 import java.util.jar.Manifest
@@ -25,6 +26,7 @@ class SettingFragment : Fragment() {
      override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
          val spName = "App_config"
          val sp = activity!!.getSharedPreferences(spName, Context.MODE_PRIVATE)
+         NavBar().setGo(4,view)
 
          setting_begin(view,sp)
          setting_listen(view,sp)

@@ -8,105 +8,125 @@
     android:background="@drawable/bg_app"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/block1"
-        android:layout_width="359dp"
-        android:layout_height="149dp"
-        android:layout_marginTop="32dp"
-        android:adjustViewBounds="false"
 
-        android:alpha="1"
-        android:clickable="false"
-        android:cropToPadding="false"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/include7"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/block1"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <ImageView
+                android:id="@+id/block1"
+                android:layout_width="359dp"
+                android:layout_height="149dp"
+
+                android:adjustViewBounds="false"
+                android:alpha="1"
+                android:clickable="false"
+                android:cropToPadding="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/block1"
+                tools:visibility="visible" />
+
+            <Button
+                android:id="@+id/Add"
+                android:layout_width="23dp"
+                android:layout_height="19dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/add"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:allowUndo="false"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/b_nav_management"
+            android:textAlignment="center"
+            android:textColor="#FDFDFD"
+            android:textSize="40sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/Edit"
+            android:layout_width="51dp"
+            android:layout_height="28dp"
+            android:background="@drawable/rounden_button"
+            android:fontFamily="@font/roboto_light"
+            android:text="Edit"
+            android:textColor="#FFFFFF"
+
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="560dp" />
+
+        <TextView
+            android:id="@+id/Done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contextClickable="true"
+            android:fontFamily="@font/roboto_light"
+            android:text="Done"
+            android:textColor="#42BAFD"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:layout_editor_absoluteX="324dp"
+            tools:layout_editor_absoluteY="131dp" />
+
+        <TextView
+            android:id="@+id/Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contextClickable="true"
+            android:fontFamily="@font/roboto_light"
+            android:text="Cancel"
+            android:textColor="#42BAFD"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:layout_editor_absoluteX="45dp"
+            tools:layout_editor_absoluteY="131dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/include7"
+        layout="@layout/navbar_botton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:allowUndo="false"
-        android:fontFamily="@font/roboto_light"
-        android:text="@string/b_nav_management"
-        android:textAlignment="center"
-        android:textColor="#FDFDFD"
-        android:textSize="40sp"
-        android:textStyle="italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <Button
-        android:id="@+id/Edit"
-        android:layout_width="51dp"
-        android:layout_height="28dp"
-        android:background="@drawable/rounden_button"
-        android:fontFamily="@font/roboto_light"
-        android:text="Edit"
-        android:textColor="#FFFFFF"
-
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/block1"
-        app:layout_constraintVertical_bias="0.868" />
-
-    <Button
-        android:id="@+id/Add"
-        android:layout_width="23dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="148dp"
-        android:layout_marginEnd="168dp"
-        android:background="@drawable/add"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/block1"
-        app:layout_constraintTop_toTopOf="@+id/block1" />
-
-    <TextView
-        android:id="@+id/Done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="248dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:contextClickable="true"
-        android:fontFamily="@font/roboto_light"
-        android:text="Done"
-        android:textColor="#42BAFD"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/block1"
-        app:layout_constraintStart_toEndOf="@+id/Cancel"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.464" />
-
-    <TextView
-        android:id="@+id/Cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:contextClickable="true"
-        android:fontFamily="@font/roboto_light"
-        android:text="Cancel"
-        android:textColor="#42BAFD"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/block1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.464" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

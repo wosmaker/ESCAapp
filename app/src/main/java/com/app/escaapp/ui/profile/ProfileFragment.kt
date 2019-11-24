@@ -7,6 +7,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.PopupWindow
 import android.widget.Toast
+import com.app.escaapp.NavBar
 import com.app.escaapp.R
 import com.app.escaapp.ui.setting.SettingFragment
 import kotlinx.android.synthetic.main.fragment_profile.view.*
@@ -29,6 +30,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val spName = "App_config"
         val sp = activity!!.getSharedPreferences(spName,Context.MODE_PRIVATE)
+        NavBar().setGo(4,view)
 
         try{
 

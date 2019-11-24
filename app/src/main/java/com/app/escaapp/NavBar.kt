@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.navbar_botton.view.*
 
 class NavBar:Fragment() {
 
-    fun nav_bar(args:Int,v:View){
+    fun bar(args:Int,v:View){
         when (args) {
             0 -> v.nav_profile.setBackgroundResource(R.drawable.profile_home)
             1 -> v.nav_location.setBackgroundResource(R.drawable.location_home)
@@ -80,59 +80,48 @@ class NavBar:Fragment() {
         }
     }
 
-    fun setGo(now:Int, des:Int,v:View){
+    fun setGo(now:Int,v:View){
+        bar(now,v)
         when(now){
             0 -> {
                 // profile
-                when(des){
-                    0 -> v.nav_profile.setOnClickListener{}
-                    1 -> v.nav_location.setOnClickListener{v.findNavController().navigate(R.id.action_profile_location)}
-                    2 -> v.nav_emergency.setOnClickListener{v.findNavController().popBackStack()}
-                    3 -> v.nav_manage.setOnClickListener{v.findNavController().navigate(R.id.action_profile_manage)}
-                    4 -> v.nav_setting.setOnClickListener{v.findNavController().navigate(R.id.action_profile_setting)}
+                v.nav_profile.setOnClickListener{}
+                v.nav_location.setOnClickListener{v.findNavController().navigate(R.id.action_profile_location)}
+                v.nav_emergency.setOnClickListener{v.findNavController().popBackStack()}
+                v.nav_manage.setOnClickListener{v.findNavController().navigate(R.id.action_profile_manage)}
+                v.nav_setting.setOnClickListener{v.findNavController().navigate(R.id.action_profile_setting)}
                 }
-            }
+
             1 -> {
                 // location
-                when(des){
-                    0 -> v.nav_profile.setOnClickListener{v.findNavController().navigate(R.id.action_location_profile)}
-                    1 -> v.nav_location.setOnClickListener{}
-                    2 -> v.nav_emergency.setOnClickListener{v.findNavController().popBackStack()}
-                    3 -> v.nav_manage.setOnClickListener{v.findNavController().navigate(R.id.action_location_manage)}
-                    4 -> v.nav_setting.setOnClickListener{v.findNavController().navigate(R.id.action_location_setting)}
-                }
+                v.nav_profile.setOnClickListener{v.findNavController().navigate(R.id.action_location_profile)}
+                v.nav_location.setOnClickListener{}
+                v.nav_emergency.setOnClickListener{v.findNavController().popBackStack()}
+                v.nav_manage.setOnClickListener{v.findNavController().navigate(R.id.action_location_manage)}
+                v.nav_setting.setOnClickListener{v.findNavController().navigate(R.id.action_location_setting)}
+
             }
             2 -> {
-                when(des){
-                    0 -> v.nav_profile.setOnClickListener{v.findNavController().navigate(R.id.action_emergency_profile)}
-                    1 -> v.nav_location.setOnClickListener{v.findNavController().navigate(R.id.action_emergency_location)}
-                    2 -> v.nav_emergency.setOnClickListener{}
-                    3 -> v.nav_manage.setOnClickListener{v.findNavController().navigate(R.id.action_emergency_manage)}
-                    4 -> v.nav_setting.setOnClickListener{v.findNavController().navigate(R.id.action_emergency_setting)}
-                }
+                v.nav_profile.setOnClickListener{v.findNavController().navigate(R.id.action_emergency_profile)}
+                v.nav_location.setOnClickListener{v.findNavController().navigate(R.id.action_emergency_location)}
+                v.nav_emergency.setOnClickListener{}
+                v.nav_manage.setOnClickListener{v.findNavController().navigate(R.id.action_emergency_manage)}
+                v.nav_setting.setOnClickListener{v.findNavController().navigate(R.id.action_emergency_setting)}
             }
             3 -> {
-                when(des){
-                    0 -> v.nav_profile.setOnClickListener{v.findNavController().navigate(R.id.action_mange_profile)}
-                    1 -> v.nav_location.setOnClickListener{v.findNavController().navigate(R.id.action_manage_location)}
-                    2 -> v.nav_emergency.setOnClickListener{v.findNavController().popBackStack()}
-                    3 -> v.nav_manage.setOnClickListener{}
-                    4 -> v.nav_setting.setOnClickListener{v.findNavController().navigate(R.id.action_mange_setting)}
-                }
+                v.nav_profile.setOnClickListener{v.findNavController().navigate(R.id.action_mange_profile)}
+                v.nav_location.setOnClickListener{v.findNavController().navigate(R.id.action_manage_location)}
+                v.nav_emergency.setOnClickListener{v.findNavController().popBackStack()}
+                v.nav_manage.setOnClickListener{}
+                v.nav_setting.setOnClickListener{v.findNavController().navigate(R.id.action_mange_setting)}
             }
             4 -> {
-                when(des){
-                    0 -> v.nav_profile.setOnClickListener{v.findNavController().navigate(R.id.action_setting_profile)}
-                    1 -> v.nav_location.setOnClickListener{v.findNavController().navigate(R.id.action_setting_location)}
-                    2 -> v.nav_emergency.setOnClickListener{v.findNavController().popBackStack()}
-                    3 -> v.nav_manage.setOnClickListener{v.findNavController().navigate(R.id.action_setting_manage)}
-                    4 -> v.nav_setting.setOnClickListener{}
+                v.nav_profile.setOnClickListener{v.findNavController().navigate(R.id.action_setting_profile)}
+                v.nav_location.setOnClickListener{v.findNavController().navigate(R.id.action_setting_location)}
+                v.nav_emergency.setOnClickListener{v.findNavController().popBackStack()}
+                v.nav_manage.setOnClickListener{v.findNavController().navigate(R.id.action_setting_manage)}
+                v.nav_setting.setOnClickListener{}
                 }
-            }
         }
     }
-
-
-
-
 }
