@@ -6,14 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import com.app.escaapp.NavBar
 import com.app.escaapp.R
 import kotlinx.android.synthetic.main.fragment_manage.view.*
 
 
 class ManageFragment : Fragment() {
-
-    private lateinit var viewModel: MangeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,16 +24,14 @@ class ManageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-       /*
-        when_edit_cancel(view)
-        add_contact(view)
-        */
+        try {
+            NavBar().setGo(3, view)
+        }
+        catch (e : Exception){
+            Toast.makeText(activity,"Error $e",Toast.LENGTH_LONG)
+        }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MangeViewModel::class.java)
-    }
 /*
 
     private fun when_edit_cancel(view:View){

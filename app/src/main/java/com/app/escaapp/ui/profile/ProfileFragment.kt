@@ -30,7 +30,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val spName = "App_config"
         val sp = activity!!.getSharedPreferences(spName,Context.MODE_PRIVATE)
-        NavBar().setGo(4,view)
+        NavBar().setGo(0,view)
 
         try{
 
