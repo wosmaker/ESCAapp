@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/bg_app"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/cancel_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light_italic"
+        android:text="@android:string/cancel"
+        android:clickable="true"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#3D8BF0"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        android:translationX="60px"
+        android:translationY="80px" />
+
+    <TextView
+        android:id="@+id/new_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light_italic"
+        android:text="New Contact"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp"
+        android:textStyle="bold|italic"
+        android:translationY="80px" />
+
+    <Button
+        android:id="@+id/pro_pic"
+        android:layout_width="169dp"
+        android:layout_height="172dp"
+        android:background="@drawable/propic"
+        android:textAlignment="center"
+        android:translationX="310px"
+        android:translationY="120px" />
+
+    <ImageView
+        android:id="@+id/field"
+        android:layout_width="372dp"
+        android:layout_height="364dp"
+        android:translationX="50px"
+        android:translationY="50px"
+        app:srcCompat="@drawable/input" />
+
+    <EditText
+        android:id="@+id/relate_name"
+        android:layout_width="205dp"
+        android:layout_height="39dp"
+        android:backgroundTint="#33FFFFFF"
+        android:ems="10"
+        android:fontFamily="@font/roboto_light_italic"
+        android:hint="A-Z"
+        android:inputType="textPersonName"
+        android:textAlignment="viewEnd"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#33FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:translationX="470px"
+        android:translationY="-700px" />
+
+    <EditText
+        android:id="@+id/relate_phone"
+        android:layout_width="205dp"
+        android:layout_height="39dp"
+        android:backgroundTint="#33FFFFFF"
+        android:ems="10"
+        android:fontFamily="@font/roboto_light_italic"
+        android:hint="085-965-xxx"
+        android:inputType="textPersonName"
+        android:textAlignment="viewEnd"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#33FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:translationX="470px"
+        android:translationY="-610px" />
+
+    <EditText
+        android:id="@+id/relationship"
+        android:layout_width="205dp"
+        android:layout_height="39dp"
+        android:backgroundTint="#33FFFFFF"
+        android:ems="10"
+        android:fontFamily="@font/roboto_light_italic"
+        android:hint="Father,Mother,etc."
+        android:inputType="textPersonName"
+        android:textAlignment="viewEnd"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#33FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:translationX="470px"
+        android:translationY="-530px" />
+
+    <ImageView
+        android:id="@+id/confirm_field_pop"
+        android:layout_width="334dp"
+        android:layout_height="149dp"
+        android:background="@drawable/confirm"
+        android:translationX="100px"
+        android:translationY="-1060px"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:id="@+id/save_in_pop"
+        android:layout_width="110dp"
+        android:layout_height="34dp"
+        android:background="@drawable/no"
+        android:translationX="680px"
+        android:translationY="-1200px"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/discard_in_pop"
+        android:layout_width="110dp"
+        android:layout_height="34dp"
+        android:background="@drawable/discard"
+        android:translationX="140px"
+        android:translationY="-1290px"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/done_pop"
+        android:layout_width="111dp"
+        android:layout_height="43dp"
+        android:background="@drawable/done"
+        android:translationX="740px"
+        android:translationY="-850px" />
+
+
+</LinearLayout>
