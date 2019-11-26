@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.core.view.marginTop
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,10 +50,36 @@ class ManageFragment() : Fragment() {
         NavBar().setGo(3, view)
         Edit_state(view)
 
-        val user = db.getAllUser()
-        val UserListAaptor = userAdapter(requireActivity(),R.layout.user_customview,user)
+        val users = db.getAllUser()
+        val adapter  = userAdapter(requireActivity(),R.layout.user_customview,users)
+        view.userListView.adapter =  adapter
 
-        view.userListView.adapter = UserListAaptor
+        view.userListView.setOnItemLongClickListener { adapterView, view, position, id ->
+            val itemAtPos = adapterView.getItemAtPosition(position) as UserModel
+            val itemIdAtPos = adapterView.getItemIdAtPosition(position)
+            try{
+                Toast.makeText(
+                    requireContext(),
+                    "Click on item at ${itemAtPos.relate_name} its item id $itemIdAtPos",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                view.userListView.removeViewAt(position)
+                adapter.notifyDataSetChanged()
+
+            }catch (e:Exception)
+            {
+                Toast.makeText(requireContext(),"Error $e",Toast.LENGTH_LONG).show()
+            }
+
+            true
+        }
+
+        view.Edit.setOnLongClickListener {
+            adapter.notifyDataSetChanged()
+            true
+        }
+
 
 
     }
