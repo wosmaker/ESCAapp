@@ -49,7 +49,7 @@ class Add_Contact : Fragment() {
             val phone_no = view.Phone_.text.toString()
             val relation = view.Relationship_.text.toString()
 
-            val result = db.addUser(UserModel(id,relate_name,phone_no,relation))
+            val result = db.addUser(UserModel(id,relate_name,phone_no,relation,true))
             Toast.makeText(activity,"Added user :: $result",Toast.LENGTH_LONG).show()
         }catch (e : Exception){
             Toast.makeText(activity,"Error :: $e",Toast.LENGTH_LONG).show()

@@ -49,15 +49,5 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btn_delete"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:isScrollContainer="false"
-            android:keepScreenOn="false"
-            android:longClickable="false"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/delete" />
     </LinearLayout>
 </LinearLayout>

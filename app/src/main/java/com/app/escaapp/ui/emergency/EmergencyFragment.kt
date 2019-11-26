@@ -14,9 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.navigation.findNavController
 import com.app.escaapp.NavBar
 import com.app.escaapp.R
+import kotlinx.android.synthetic.main.fragment_call_list.view.*
+import kotlinx.android.synthetic.main.fragment_emergency.*
 import kotlinx.android.synthetic.main.fragment_emergency.view.*
+import kotlinx.android.synthetic.main.navbar_botton.view.*
 import java.text.NumberFormat
 
 /**
@@ -55,7 +59,30 @@ class EmergencyFragment : Fragment() {
             Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
 
         }
-        
+
+        call_list_manage(view)
+
+
+
+
+
+
+        view.btn_callHistory.setOnClickListener {
+//            view.findNavController().navigate()
+        }
+
+    }
+
+    fun call_list_manage(view: View){
+        view.nav_emergency.setOnClickListener{
+            view.call_list.visibility = View.VISIBLE
+        }
+
+        view.out_call_list.setOnClickListener{
+            view.call_list.visibility = View.INVISIBLE
+        }
+
+
     }
 
     fun callTo(phoneNumber: String){
