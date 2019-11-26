@@ -1,6 +1,8 @@
 package com.app.escaapp.ui.manage
 
 
+import android.app.Activity
+import android.content.ClipData
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,25 +11,50 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.core.view.marginTop
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.app.escaapp.IOBackPressed
+import com.app.escaapp.MainAppActivity
 import com.app.escaapp.NavBar
 import com.app.escaapp.R
+import com.example.management.UserModel
+import com.example.management.UsersDBHelper
+import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.fragment_manage.view.*
 
 
-class ManageFragment : Fragment() {
+
+
+class ManageFragment() : Fragment() {
+
+    lateinit var db: UsersDBHelper
+    lateinit var adapter:userAdapter
+
+    var items:MutableList<UserModel> = ArrayList()
+
+    fun onLoadMore(){
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        db = UsersDBHelper(requireContext())
+
         return inflater.inflate(R.layout.fragment_manage, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         NavBar().setGo(3, view)
         Edit_state(view)
+
+        val user = db.getAllUser()
+        val UserListAaptor = userAdapter(requireActivity(),R.layout.user_customview,user)
+
+        view.userListView.adapter = UserListAaptor
+
+
     }
 
 
@@ -36,7 +63,7 @@ class ManageFragment : Fragment() {
         view.Cancel.setOnClickListener{End_Anime(view)}
         view.Done.setOnClickListener{End_Anime((view))}
         view.Add.setOnClickListener {
-
+            view.findNavController().navigate(R.id.manage_addContact)
         }
     }
 

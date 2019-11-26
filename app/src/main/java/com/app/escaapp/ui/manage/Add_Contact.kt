@@ -13,6 +13,7 @@ import com.example.management.UsersDBHelper
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.fragment_manage.view.*
 import kotlinx.android.synthetic.main.fragment_mange_addcontact.view.*
+import kotlinx.coroutines.delay
 import java.lang.Exception
 
 class Add_Contact : Fragment() {
@@ -25,29 +26,30 @@ class Add_Contact : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         //initial
-        db = UsersDBHelper(this)
-        return inflater.inflate(R.layout.fragment_manage_contact, container, false)
+        db = UsersDBHelper(requireContext())
+        return inflater.inflate(R.layout.fragment_mange_addcontact, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.btn_Add.setOnClickListener {
-            AddContactData(view)
+            addContactData(view)
+            view.findNavController().popBackStack()
         }
 
         view.btn_Cancel.setOnClickListener {
-//            view.findNavController().navigate()
+            view.findNavController().popBackStack()
         }
     }
 
-    fun AddContactData(view:View){
-        lateinit var user : UserModel
-        user.id = 0
-        user.relate_name = view.Name_.text.toString()
-        user.phone_no = view.Phone_.text.toString()
-        user.relation = view.Relationship_.text.toString()
-
+    private fun addContactData(view:View){
         try{
-            val result = db.addUser(user)
+            lateinit var user : UserModel
+            val id = 0
+            val relate_name = view.Name_.text.toString()
+            val phone_no = view.Phone_.text.toString()
+            val relation = view.Relationship_.text.toString()
+
+            val result = db.addUser(UserModel(id,relate_name,phone_no,relation))
             Toast.makeText(activity,"Added user :: $result",Toast.LENGTH_LONG).show()
         }catch (e : Exception){
             Toast.makeText(activity,"Error :: $e",Toast.LENGTH_LONG).show()

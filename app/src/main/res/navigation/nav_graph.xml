@@ -108,6 +108,14 @@
         <fragment
             android:id="@+id/manageFragment"
             android:name="com.app.escaapp.ui.manage.ManageFragment"
-            android:label="ManageFragment" />
+            android:label="ManageFragment" >
+            <action
+                android:id="@+id/manage_addContact"
+                app:destination="@+id/add_Contact" />
+        </fragment>
+        <fragment
+            android:id="@+id/add_Contact"
+            android:name="com.app.escaapp.ui.manage.Add_Contact"
+            android:label="Add_Contact" />
     </navigation>
 </navigation>

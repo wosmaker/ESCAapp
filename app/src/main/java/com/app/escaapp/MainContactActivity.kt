@@ -16,7 +16,7 @@ class MainContactActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_manage)
        // db=UsersDBHelper(this)
-
+//
 //        edit_view_animation()
 //        add_contact()
 //        cancel_edit()
@@ -53,26 +53,26 @@ class MainContactActivity : AppCompatActivity() {
 //        }
 //    }
 //
-//    private fun cancel_edit()
-//    {
-//
-//        Cancel.setOnClickListener {
-//            val fade = AnimationUtils.loadAnimation(this, R.anim.fade_in)
-//            edit_but.startAnimation(fade)
-//            val sd = AnimationUtils.loadAnimation(this, R.anim.slide_up)
-//            block1.startAnimation(sd)
-//            val sd_add = AnimationUtils.loadAnimation(this, R.anim.fade)
-//
-//            edit_but.visibility = View.VISIBLE
-//            block1.translationY = 0F
-//            add.startAnimation(sd_add)
-//            Cancel.startAnimation(sd_add)
-//            Done.startAnimation(sd_add)
-//
-//            Cancel.visibility = View.INVISIBLE
-//            Done.visibility = View.INVISIBLE
-//            add.visibility = View.INVISIBLE
-//        }
+/*    private fun cancel_edit()
+    {
+
+        Cancel.setOnClickListener {
+            val fade = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+            edit_but.startAnimation(fade)
+            val sd = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+            block1.startAnimation(sd)
+            val sd_add = AnimationUtils.loadAnimation(this, R.anim.fade)
+
+            edit_but.visibility = View.VISIBLE
+            block1.translationY = F
+            add.startAnimation(sd_add)
+            Cancel.startAnimation(sd_add)
+            Done.startAnimation(sd_add)
+
+            Cancel.visibility = View.INVISIBLE
+            Done.visibility = View.INVISIBLE
+            add.visibility = View.INVISIBLE
+//        }*/
 //    }
 //
 //    private fun done_edit()
