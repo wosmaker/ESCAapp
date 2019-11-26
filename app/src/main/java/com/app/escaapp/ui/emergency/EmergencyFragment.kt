@@ -24,6 +24,7 @@ import java.text.NumberFormat
  */
 class EmergencyFragment : Fragment() {
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,10 +39,23 @@ class EmergencyFragment : Fragment() {
         NavBar().setGo(2,view)
 
 
-//        Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
-//        callTo("0888590724")
-//        //smsTo("0888590724")
+        view.call_police.setOnClickListener{
+            callTo("0888590724")
+            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+        }
 
+        view.call_hopital.setOnClickListener{
+            callTo("0888590724")
+            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+
+        }
+
+        view.call_relative.setOnClickListener{
+            callTo("0888590724")
+            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+
+        }
+        
     }
 
     fun callTo(phoneNumber: String){

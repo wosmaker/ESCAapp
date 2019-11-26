@@ -29,7 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <LinearLayout
                     android:id="@+id/btn_police"
@@ -37,14 +38,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:background="@drawable/radius"
+                    android:clickable="true"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:longClickable="false"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <Button
+                        android:id="@+id/call_police"
                         android:layout_width="176dp"
                         android:layout_height="176dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@drawable/call_police" />
+                        android:background="@drawable/call_police"
+                        android:clickable="true" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -57,19 +64,24 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/brn_hospital"
+                    android:id="@+id/btn_hospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:background="@drawable/radius"
+                    android:clickable="true"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <Button
+                        android:id="@+id/call_hopital"
                         android:layout_width="176dp"
                         android:layout_height="176dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@drawable/call_hospital" />
+                        android:background="@drawable/call_hospital"
+                        android:clickable="true" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -87,14 +99,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:background="@drawable/radius"
+                    android:clickable="true"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <Button
+                        android:id="@+id/call_relative"
                         android:layout_width="176dp"
                         android:layout_height="176dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@drawable/call_relative" />
+                        android:background="@drawable/call_relative"
+                        android:clickable="true" />
 
                     <TextView
                         android:layout_width="match_parent"
