@@ -39,12 +39,11 @@ class userAdapter (activity: Activity, resource : Int = R.layout.user_customview
         rowView.relate_name.text = list[position].relate_name
         rowView.phone_no.text = list[position].phone_no
 
-        rowView.btn_delete.setOnClickListener{
-//            list.remove(list[position]
+        rowView.btn_delete.setOnClickListener {
+            //            list.remove(list[position]
             db.deleteUser(list[position].id)
-            Toast.makeText(activity,"Item Delete",Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Item Delete", Toast.LENGTH_LONG).show()
         }
-
         return rowView
     }
 

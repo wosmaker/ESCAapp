@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import android.widget.Toast
 
 import java.util.ArrayList
 
@@ -59,8 +61,8 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(Tb_user)
-        val callList = initital()
-        addAllUesr(callList)
+//        val callList = initital()
+//        addAllUesr(callList)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -78,8 +80,9 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
     fun addAllUesr(users : ArrayList<UserModel>){
-        users.forEach {user ->
-            addUser(user)
+        users.forEach {
+            addUser(it)
+            Log.d("dbaddtest",it.toString())
         }
     }
 

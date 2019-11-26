@@ -50,9 +50,19 @@ class ManageFragment() : Fragment() {
         NavBar().setGo(3, view)
         Edit_state(view)
 
-        val users = db.getAllUser()
-        val adapter  = userAdapter(requireActivity(),R.layout.user_customview,users)
-        view.userListView.adapter =  adapter
+        try{
+            val users = db.getAllUser()
+            val customByUser = ArrayList<UserModel>()
+            users.forEach {
+                if (it.byUser){
+                    customByUser.add(it)
+                }
+            }
+
+            val adapter  = userAdapter(requireActivity(),R.layout.user_customview,customByUser)
+            view.userListView.adapter =  adapter
+        }catch (e:Exception){error(e)}
+
 
         view.userListView.setOnItemLongClickListener { adapterView, view, position, id ->
             val itemAtPos = adapterView.getItemAtPosition(position) as UserModel
@@ -76,13 +86,14 @@ class ManageFragment() : Fragment() {
         }
 
         view.Edit.setOnLongClickListener {
-            adapter.notifyDataSetChanged()
             true
         }
-
-
-
     }
+
+    private fun error(e:Exception){
+        Toast.makeText(requireContext(),"Error $e",Toast.LENGTH_LONG).show()
+    }
+
 
 
     private fun Edit_state(view:View){

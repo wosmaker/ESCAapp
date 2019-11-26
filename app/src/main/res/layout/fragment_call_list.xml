@@ -33,6 +33,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ListView
+            android:id="@+id/dynamic_call_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </ScrollView>
