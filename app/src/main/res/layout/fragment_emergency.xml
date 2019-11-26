@@ -17,36 +17,110 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/test1"
+        <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="74dp"
-            android:layout_marginTop="224dp"
-            android:layout_marginEnd="74dp"
-            android:text="emergency page"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textIsSelectable="true"
-            android:textSize="36sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/call"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="161dp"
-            android:layout_marginTop="282dp"
-            android:layout_marginEnd="162dp"
-            android:layout_marginBottom="23dp"
-            android:text="Button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/test1" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/btn_police"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:layout_width="176dp"
+                        android:layout_height="176dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/call_police" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="POLICE"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/brn_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:layout_width="176dp"
+                        android:layout_height="176dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/call_hospital" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HOSPITAL"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_relative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:layout_width="176dp"
+                        android:layout_height="176dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/call_relative" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="RELATIVE"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textIsSelectable="false"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_callHistory"
+            android:layout_width="42dp"
+            android:layout_height="369dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/call_history"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include

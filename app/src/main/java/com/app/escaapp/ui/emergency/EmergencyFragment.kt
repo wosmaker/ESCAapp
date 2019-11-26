@@ -37,12 +37,11 @@ class EmergencyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         NavBar().setGo(2,view)
 
-        view.test1.text = "Hello Emergency"
-        view.call.setOnClickListener {
-            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
-            callTo("0888590724")
-            //smsTo("0888590724")
-        }
+
+//        Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+//        callTo("0888590724")
+//        //smsTo("0888590724")
+
     }
 
     fun callTo(phoneNumber: String){
