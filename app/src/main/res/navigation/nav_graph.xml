@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/Emergency">
+
+    <navigation
+        android:id="@+id/Emergency"
+        app:startDestination="@id/emergencyFragment" >
+        <fragment
+            android:id="@+id/emergencyFragment"
+            android:name="com.app.escaapp.ui.emergency.EmergencyFragment"
+            android:label="fragment_emergency"
+            tools:layout="@layout/fragment_emergency">
+        </fragment>
+        <action
+            android:id="@+id/action_emergency_profile"
+            app:destination="@id/Profile" />
+        <action
+            android:id="@+id/action_emergency_manage"
+            app:destination="@id/Manage" />
+        <action
+            android:id="@+id/action_emergency_setting"
+            app:destination="@id/Setting" />
+        <action
+            android:id="@+id/action_emergency_location"
+            app:destination="@id/Location" />
+    </navigation>
+    <navigation
+        android:id="@+id/Profile"
+        app:startDestination="@id/profileFragment">
+        <fragment
+            android:id="@+id/profileFragment"
+            android:name="com.app.escaapp.ui.profile.ProfileFragment"
+            android:label="ProfileFragment" />
+        <action
+            android:id="@+id/action_profile_location"
+            app:destination="@id/Location"
+            app:popUpTo="@+id/Profile" />
+        <action
+            android:id="@+id/action_profile_manage"
+            app:destination="@+id/Manage"
+            app:popUpTo="@+id/Profile" />
+        <action
+            android:id="@+id/action_profile_setting"
+            app:destination="@id/Setting"
+            app:popUpTo="@+id/Profile" />
+    </navigation>
+    <navigation
+        android:id="@+id/Setting"
+        app:startDestination="@id/settingFragment" >
+        <fragment
+            android:id="@+id/settingFragment"
+            android:name="com.app.escaapp.ui.setting.SettingFragment"
+            android:label="fragment_setting"
+            tools:layout="@layout/fragment_setting">
+        </fragment>
+        <action
+            android:id="@+id/action_setting_manage"
+            app:destination="@id/Manage"
+            app:popUpTo="@+id/Setting" />
+        <action
+            android:id="@+id/action_setting_profile"
+            app:destination="@id/Profile"
+            app:popUpTo="@+id/Setting" />
+        <action
+            android:id="@+id/action_setting_location"
+            app:destination="@id/Location"
+            app:popUpTo="@+id/Setting" />
+    </navigation>
+    <navigation
+        android:id="@+id/Location"
+        app:startDestination="@id/locationFragment" >
+        <fragment
+            android:id="@+id/locationFragment"
+            android:name="com.app.escaapp.ui.location.LocationFragment"
+            android:label="fragment_location"
+            tools:layout="@layout/fragment_location" />
+        <action
+            android:id="@+id/action_location_profile"
+            app:destination="@id/Profile"
+            app:popUpTo="@+id/Location" />
+        <action
+            android:id="@+id/action_location_manage"
+            app:destination="@id/Manage"
+            app:popUpTo="@+id/Location" />
+        <action
+            android:id="@+id/action_location_setting"
+            app:destination="@id/Setting"
+            app:popUpTo="@+id/Location" />
+    </navigation>
+    <navigation
+        android:id="@+id/Manage"
+        app:startDestination="@id/manageFragment">
+        <action
+            android:id="@+id/action_manage_location"
+            app:destination="@id/Location"
+            app:popUpTo="@+id/Manage" />
+        <action
+            android:id="@+id/action_mange_profile"
+            app:destination="@id/Profile"
+            app:popUpTo="@+id/Manage" />
+        <action
+            android:id="@+id/action_mange_setting"
+            app:destination="@id/Setting"
+            app:popUpTo="@+id/Manage" />
+        <fragment
+            android:id="@+id/manageFragment"
+            android:name="com.app.escaapp.ui.manage.ManageFragment"
+            android:label="ManageFragment" >
+            <action
+                android:id="@+id/manage_addContact"
+                app:destination="@+id/add_Contact" />
+        </fragment>
+        <fragment
+            android:id="@+id/add_Contact"
+            android:name="com.app.escaapp.ui.manage.Add_Contact"
+            android:label="Add_Contact" />
+    </navigation>
+</navigation>

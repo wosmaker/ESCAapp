@@ -1,81 +1,138 @@
 package com.app.escaapp.ui.manage
 
 
+import android.app.Activity
+import android.content.ClipData
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.core.view.marginTop
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.app.escaapp.IOBackPressed
+import com.app.escaapp.MainAppActivity
+import com.app.escaapp.NavBar
 import com.app.escaapp.R
+import com.example.management.UserModel
+import com.example.management.UsersDBHelper
+import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.fragment_manage.view.*
 
 
-class ManageFragment : Fragment() {
 
-    private lateinit var viewModel: MangeViewModel
+
+class ManageFragment() : Fragment() {
+
+    lateinit var db: UsersDBHelper
+    lateinit var adapter:userAdapter
+
+    var items:MutableList<UserModel> = ArrayList()
+
+    fun onLoadMore(){
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        db = UsersDBHelper(requireContext())
+
         return inflater.inflate(R.layout.fragment_manage, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-       /*
-        when_edit_cancel(view)
-        add_contact(view)
-        */
-    }
+        NavBar().setGo(3, view)
+        Edit_state(view)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MangeViewModel::class.java)
-    }
-/*
+        val users = db.getAllUser()
+        val adapter  = userAdapter(requireActivity(),R.layout.user_customview,users)
+        view.userListView.adapter =  adapter
 
-    private fun when_edit_cancel(view:View){
-        view.Edit.setOnClickListener {
-            view.Cancel.visibility = View.VISIBLE
-            view.Done.visibility = View.VISIBLE
-            view.Add.visibility = View.VISIBLE
+        view.userListView.setOnItemLongClickListener { adapterView, view, position, id ->
+            val itemAtPos = adapterView.getItemAtPosition(position) as UserModel
+            val itemIdAtPos = adapterView.getItemIdAtPosition(position)
+            try{
+                Toast.makeText(
+                    requireContext(),
+                    "Click on item at ${itemAtPos.relate_name} its item id $itemIdAtPos",
+                    Toast.LENGTH_LONG
+                ).show()
 
-            view.Edit.visibility = View.INVISIBLE
+                view.userListView.removeViewAt(position)
+                adapter.notifyDataSetChanged()
+
+            }catch (e:Exception)
+            {
+                Toast.makeText(requireContext(),"Error $e",Toast.LENGTH_LONG).show()
+            }
+
+            true
         }
 
-        view.Cancel.setOnClickListener{
-            view.Edit.visibility = View.VISIBLE
-
-            view.Cancel.visibility = View.INVISIBLE
-            view.Done.visibility = View.INVISIBLE
-            view.Add.visibility = View.INVISIBLE
-            // Do action here
-
+        view.Edit.setOnLongClickListener {
+            adapter.notifyDataSetChanged()
+            true
         }
 
-        view.Done.setOnClickListener{
-            view.Edit.visibility = View.VISIBLE
 
-            view.Cancel.visibility = View.INVISIBLE
-            view.Done.visibility = View.INVISIBLE
-            view.Add.visibility = View.INVISIBLE
-            // Do action here
 
-        }
     }
 
 
-    private fun add_contact(view:View){
-        view.Add.setOnClickListener{
-            activity!!.supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment, ManageFragment_contact())
-                //.addToBackStack(null)
-                .commit()
+    private fun Edit_state(view:View){
+        view.Edit.setOnClickListener {Start_Anime(view)}
+        view.Cancel.setOnClickListener{End_Anime(view)}
+        view.Done.setOnClickListener{End_Anime((view))}
+        view.Add.setOnClickListener {
+            view.findNavController().navigate(R.id.manage_addContact)
         }
     }
-*/
+
+    private fun Start_Anime(view:View){
+        val fade = AnimationUtils.loadAnimation(requireContext(), R.anim.fade)
+        val sd = AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down)
+        val sd_add = AnimationUtils.loadAnimation(requireContext(),R.anim.fade_in)
+
+        view.block.startAnimation(sd)
+        view.block.translationY = 30F
+
+        view.Add.startAnimation(sd_add)
+        view.Done.startAnimation(sd_add)
+        view.Cancel.startAnimation(sd_add)
+
+        view.Edit.startAnimation(fade)
+
+        view.Cancel.visibility = View.VISIBLE
+        view.Done.visibility = View.VISIBLE
+        view.Add.visibility = View.VISIBLE
+
+        view.Edit.visibility = View.INVISIBLE
+    }
+
+    private fun End_Anime(view: View){
+        val fade = AnimationUtils.loadAnimation(activity, R.anim.fade_in)
+        val sd = AnimationUtils.loadAnimation(activity, R.anim.slide_up)
+        val sd_add = AnimationUtils.loadAnimation(activity,R.anim.fade)
+
+        view.block.translationY = 0F
+        view.block.startAnimation(sd)
+
+        view.Add.startAnimation(sd_add)
+        view.Cancel.startAnimation(sd_add)
+        view.Done.startAnimation(sd_add)
+
+        view.Edit.visibility = View.VISIBLE
+        view.Cancel.visibility = View.INVISIBLE
+        view.Done.visibility = View.INVISIBLE
+        view.Add.visibility = View.INVISIBLE
+    }
+
+
 
 }

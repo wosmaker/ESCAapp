@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.app.escaapp.NavBar
 import com.app.escaapp.R
 import kotlinx.android.synthetic.main.fragment_emergency.view.*
 import java.text.NumberFormat
@@ -34,6 +35,8 @@ class EmergencyFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        NavBar().setGo(2,view)
+
         view.test1.text = "Hello Emergency"
         view.call.setOnClickListener {
             Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()

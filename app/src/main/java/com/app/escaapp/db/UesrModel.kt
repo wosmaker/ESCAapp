@@ -6,3 +6,4 @@ data class UserModel (
     var phone_no: String = "",
     var relation: String = ""
     )
+
