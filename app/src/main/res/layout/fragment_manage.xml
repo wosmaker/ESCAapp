@@ -95,14 +95,10 @@
                         app:srcCompat="@drawable/user_contact" />
                 </LinearLayout>
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/userListView"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_margin="5dp"
-                    android:layout_marginBottom="5dp">
-
-                </ListView>
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

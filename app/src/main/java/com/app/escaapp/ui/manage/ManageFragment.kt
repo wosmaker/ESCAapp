@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ListAdapter
 import android.widget.Toast
 import androidx.core.view.marginTop
 import androidx.navigation.findNavController
@@ -59,31 +60,38 @@ class ManageFragment() : Fragment() {
                 }
             }
 
-            val adapter  = userAdapter(requireActivity(),R.layout.user_customview,customByUser)
-            view.userListView.adapter =  adapter
+            view.userListView.apply {
+                layoutManager = LinearLayoutManager(activity)
+                adapter = UserAdapter(requireActivity(),customByUser)
+            }
+            adapter.notifyDataSetChanged()
+
+//
+//            val adapter  = userAdapter(requireActivity(),R.layout.user_customview,customByUser)
+//            view.userListView.adapter =  adapter
         }catch (e:Exception){error(e)}
 
 
-        view.userListView.setOnItemLongClickListener { adapterView, view, position, id ->
-            val itemAtPos = adapterView.getItemAtPosition(position) as UserModel
-            val itemIdAtPos = adapterView.getItemIdAtPosition(position)
-            try{
-                Toast.makeText(
-                    requireContext(),
-                    "Click on item at ${itemAtPos.relate_name} its item id $itemIdAtPos",
-                    Toast.LENGTH_LONG
-                ).show()
-
-                view.userListView.removeViewAt(position)
-                adapter.notifyDataSetChanged()
-
-            }catch (e:Exception)
-            {
-                Toast.makeText(requireContext(),"Error $e",Toast.LENGTH_LONG).show()
-            }
-
-            true
-        }
+//        view.userListView.setOnItemLongClickListener { adapterView, view, position, id ->
+//            val itemAtPos = adapterView.getItemAtPosition(position) as UserModel
+//            val itemIdAtPos = adapterView.getItemIdAtPosition(position)
+//            try{
+//                Toast.makeText(
+//                    requireContext(),
+//                    "Click on item at ${itemAtPos.relate_name} its item id $itemIdAtPos",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//
+//                view.userListView.removeViewAt(position)
+//                adapter.notifyDataSetChanged()
+//
+//            }catch (e:Exception)
+//            {
+//                Toast.makeText(requireContext(),"Error $e",Toast.LENGTH_LONG).show()
+//            }
+//
+//            true
+//        }
 
         view.Edit.setOnLongClickListener {
             true
