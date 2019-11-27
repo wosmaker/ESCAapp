@@ -123,7 +123,7 @@
                     android:background="@drawable/add"
                     android:gravity="bottom|center_vertical"
                     android:textAlignment="center"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

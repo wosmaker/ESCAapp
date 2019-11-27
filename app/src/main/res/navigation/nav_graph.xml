@@ -13,6 +13,20 @@
             android:name="com.app.escaapp.ui.emergency.EmergencyFragment"
             android:label="fragment_emergency"
             tools:layout="@layout/fragment_emergency">
+            <action
+                android:id="@+id/emergency_history"
+                app:destination="@+id/historyFragment"
+                app:enterAnim="@anim/nav_default_pop_enter_anim"
+                app:exitAnim="@anim/nav_default_pop_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            <action
+                android:id="@+id/emergency_callList"
+                app:destination="@id/callListFragment"
+                app:enterAnim="@anim/nav_default_pop_enter_anim"
+                app:exitAnim="@anim/nav_default_pop_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         </fragment>
         <action
             android:id="@+id/action_emergency_profile"
@@ -26,6 +40,14 @@
         <action
             android:id="@+id/action_emergency_location"
             app:destination="@id/Location" />
+        <fragment
+            android:id="@+id/historyFragment"
+            android:name="com.app.escaapp.ui.emergency.historyFragment"
+            android:label="historyFragment" />
+        <fragment
+            android:id="@+id/callListFragment"
+            android:name="com.app.escaapp.ui.emergency.callListFragment"
+            android:label="callListFragment" />
     </navigation>
     <navigation
         android:id="@+id/Profile"

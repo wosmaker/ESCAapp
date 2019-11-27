@@ -51,7 +51,7 @@
         app:srcCompat="@drawable/input" />
 
     <EditText
-        android:id="@+id/relate_name"
+        android:id="@+id/name"
         android:layout_width="205dp"
         android:layout_height="39dp"
         android:backgroundTint="#33FFFFFF"

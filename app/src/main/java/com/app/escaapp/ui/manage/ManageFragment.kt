@@ -141,7 +141,7 @@ class ManageFragment() : Fragment() {
         view.Edit.visibility = View.VISIBLE
         view.Cancel.visibility = View.INVISIBLE
         view.Done.visibility = View.INVISIBLE
-        view.Add.visibility = View.INVISIBLE
+        view.Add.visibility = View.GONE
     }
 
 

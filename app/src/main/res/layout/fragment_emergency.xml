@@ -38,7 +38,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/radius"
                     android:clickable="true"
                     android:gravity="center"
                     android:longClickable="false"
@@ -51,7 +50,7 @@
                         android:layout_height="176dp"
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/call_police"
-                        android:clickable="true" />
+                        android:clickable="false" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -69,7 +68,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/radius"
                     android:clickable="true"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -81,7 +79,7 @@
                         android:layout_height="176dp"
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/call_hospital"
-                        android:clickable="true" />
+                        android:clickable="false" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -99,7 +97,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/radius"
                     android:clickable="true"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -111,7 +108,7 @@
                         android:layout_height="176dp"
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/call_relative"
-                        android:clickable="true" />
+                        android:clickable="false" />
 
                     <TextView
                         android:layout_width="match_parent"

@@ -10,12 +10,14 @@ import android.widget.ArrayAdapter
 import com.app.escaapp.R
 import com.example.management.UserModel
 import com.example.management.UsersDBHelper
+import com.example.management.historyModel
+import kotlinx.android.synthetic.main.call_history_customview.view.*
 import kotlinx.android.synthetic.main.user_customview.view.*
 
-class callListAdaptor(activity: Activity,resource : Int = R.layout.call_list_customview,items:ArrayList<UserModel>) : ArrayAdapter<UserModel>(activity,resource,items){
+class historyAdapter(activity: Activity, resource : Int = R.layout.call_history_customview, items:ArrayList<historyModel>) : ArrayAdapter<historyModel>(activity,resource,items){
 
     private val resource:Int
-    private val list : ArrayList<UserModel>
+    private val list : ArrayList<historyModel>
     private val vi : LayoutInflater
     private val activity : Activity
     private val db : UsersDBHelper
@@ -31,8 +33,9 @@ class callListAdaptor(activity: Activity,resource : Int = R.layout.call_list_cus
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val rowView = vi.inflate(resource,null,true)
 
-        rowView.relate_name.text = list[position].relate_name
-        rowView.relate_name.text = list[position].phone_no
+        rowView.name.text = list[position].name
+        rowView.time.text = list[position].datetime
+        rowView.phone.text = list[position].desPhone
 
         return rowView
 
