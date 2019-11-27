@@ -42,6 +42,7 @@ class userAdapter (activity: Activity, resource : Int = R.layout.user_customview
         rowView.btn_delete.setOnClickListener {
             //            list.remove(list[position]
             db.deleteUser(list[position].id)
+            notifyDataSetChanged()
             Toast.makeText(activity, "Item Delete", Toast.LENGTH_LONG).show()
         }
         return rowView

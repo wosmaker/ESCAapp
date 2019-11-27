@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -35,6 +35,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="@string/app_name"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <TextView
@@ -45,19 +46,17 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:text="08885545"
+                android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
         </LinearLayout>
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_delete"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:isScrollContainer="false"
-            android:keepScreenOn="false"
-            android:longClickable="false"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/delete" />
+            android:background="@drawable/delete"
+            android:visibility="visible" />
+
     </LinearLayout>
 </LinearLayout>
