@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.user_customview.view.*
 
 
 
-class userAdapter (activity: Activity, resource : Int = R.layout.user_customview , items:ArrayList<UserModel>):ArrayAdapter<UserModel>(activity,resource,items){
+class ListAdapter (activity: Activity, resource : Int = R.layout.user_customview, items:ArrayList<UserModel>):ArrayAdapter<UserModel>(activity,resource,items){
 
     private val resource:Int
     private var list: ArrayList<UserModel>

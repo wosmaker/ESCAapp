@@ -8,12 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.app.escaapp.R
-import com.app.escaapp.ui.manage.userAdapter
+import com.app.escaapp.ui.manage.ListAdapter
 import com.example.management.UserModel
 import com.example.management.UsersDBHelper
 import com.example.management.savehistoryModel
 import kotlinx.android.synthetic.main.fragment_call_list.view.*
-import kotlinx.android.synthetic.main.fragment_emergency.view.*
 import kotlinx.android.synthetic.main.navbar_botton.view.*
 
 class callListFragment : Fragment() {
@@ -32,7 +31,7 @@ class callListFragment : Fragment() {
         init(view)
 
         val users = db.getAllUser()
-        view.dynamic_call_list.adapter =  userAdapter(requireActivity(),R.layout.user_customview,users)
+        view.dynamic_call_list.adapter =  ListAdapter(requireActivity(),R.layout.user_customview,users)
 
         view.dynamic_call_list.setOnItemClickListener { adapterView, view, position, id ->
             val item = adapterView.getItemAtPosition(position) as UserModel
