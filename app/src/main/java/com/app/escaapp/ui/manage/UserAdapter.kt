@@ -21,7 +21,6 @@ class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserV
     private var datasource = ArrayList<UserModel>()
     private var oldList = ArrayList<UserModel>()
     private var deleteQ = ArrayList<UserModel>()
-
     var edit_mode = false
 
     class UserViewHolder(val activity: Activity,itemView :View) : RecyclerView.ViewHolder(itemView) {

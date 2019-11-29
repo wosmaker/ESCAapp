@@ -26,11 +26,7 @@ class ManageFragment() : Fragment() {
     lateinit var db: UsersDBHelper
     lateinit var exview : View
     lateinit var userAdapter : UserAdapter
-
-    private var edit_mode = false
     private val buffer = ArrayList<UserModel>()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -208,8 +204,6 @@ class ManageFragment() : Fragment() {
 
             Edit.visibility = View.INVISIBLE
         }
-
-
     }
 
     private fun End_Anime(view: View){

@@ -1,10 +1,16 @@
 package com.app.escaapp.ui.emergency
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.app.escaapp.R
@@ -17,6 +23,7 @@ import kotlinx.android.synthetic.main.navbar_botton.view.*
 
 class callListFragment : Fragment() {
     lateinit var db: UsersDBHelper
+    lateinit var sp: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,30 +36,64 @@ class callListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         init(view)
+        val spName = "App_config"
+        sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
 
-        val users = db.getAllUser()
-        view.dynamic_call_list.adapter =  ListAdapter(requireActivity(),R.layout.user_customview,users)
-
-        view.dynamic_call_list.setOnItemClickListener { adapterView, view, position, id ->
-            val item = adapterView.getItemAtPosition(position) as UserModel
-            Toast.makeText(requireContext(), "Click on item at ${item.relate_name} id -> ${item.id} ", Toast.LENGTH_LONG).show()
-            db.saveHistory(savehistoryModel(0,item.phone_no,0.0,0.0))
-
-//                    callTo(item.phone_no  )
-        }
-
-        view.nav_emergency.setOnClickListener {
-            view.findNavController().popBackStack()
+        view.run{
+            dynamic_call_list.adapter =  ListAdapter(requireActivity(),R.layout.user_customview,db.getAllUser())
+            dynamic_call_list.setOnItemClickListener { adapterView, view, position, id ->
+                val item = adapterView.getItemAtPosition(position) as UserModel
+                callTo(item.phone_no)
+            }
+            nav_emergency.setOnClickListener {
+                view.findNavController().popBackStack()
+            }
         }
 
     }
 
     fun init(view:View){
-        view.nav_profile.visibility = View.GONE
-        view.nav_location.visibility = View.GONE
-        view.nav_manage.visibility = View.GONE
-        view.nav_setting.visibility = View.GONE
+        view.run{
+            nav_profile.visibility = View.GONE
+            nav_location.visibility = View.GONE
+            nav_manage.visibility = View.GONE
+            nav_setting.visibility = View.GONE
+            nav_emergency.setBackgroundResource(R.drawable.return_home)
+        }
+    }
 
-        view.nav_emergency.setBackgroundResource(R.drawable.return_home)
+    fun callTo(phoneNumber: String){
+        val intent = Intent(Intent.ACTION_CALL)
+        if (isPermissionCall()){
+            intent.data = Uri.parse("tel: $phoneNumber")
+            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+            if(sp.getBoolean("recordCallHistory",true)){
+                db.saveHistory(savehistoryModel(0,phoneNumber,0.0,0.0))
+            }
+            if(sp.getBoolean("gpsTrack",true)){
+                if(sp.getBoolean("gpsSMS",true)){
+                    smsTo(phoneNumber)
+                }
+            }
+            startActivity(intent)
+        }
+        else {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CALL_PHONE),12)
+        }
+    }
+
+    fun smsTo(phoneNumber: String) {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("smsto: $phoneNumber")
+        intent.putExtra("sms_body", "Here goes your message... from wos")
+        startActivity(intent)
+    }
+
+    fun isPermissionCall():Boolean {
+        if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
+            return true
+        }
+        Toast.makeText(activity,"Permission denied" , Toast.LENGTH_LONG).show()
+        return false
     }
 }

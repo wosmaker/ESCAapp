@@ -19,10 +19,6 @@ import com.app.escaapp.ui.setting.SettingFragment
 import kotlinx.android.synthetic.main.navbar_botton.*
 
 
-interface IOBackPressed{
-    fun onBackPressed() : Boolean
-}
-
 class MainAppActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

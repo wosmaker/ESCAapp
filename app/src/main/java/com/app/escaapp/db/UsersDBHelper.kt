@@ -145,23 +145,27 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         return (Integer.parseInt("$rowId") != -1)
     }
 
-    fun showAllHistory():ArrayList<historyModel>{
+    fun getAllHistory():ArrayList<historyModel>{
         val histories = ArrayList<historyModel>()
-        val cursor = readableDatabase.rawQuery("select t1.* , t2.* from $table_history t1 left join $table_user t2 on (t1.$des_phone = t2.$phone_no)",null)
+        val cursor = readableDatabase.rawQuery("select t1.* , t2.* from $table_history t1 left join $table_user t2 on (t1.$des_phone = t2.$phone_no) order by $create_at desc",null)
         if(cursor!!.moveToFirst()){
             do{
                 val _id = cursor.getInt(cursor.getColumnIndex(history_id))
-                val _name = cursor.getString(cursor.getColumnIndex(relate_name))
+                var _name = cursor.getString(cursor.getColumnIndex(relate_name))
                 val _phone = cursor.getString(cursor.getColumnIndex(des_phone))
                 val _datetime = cursor.getString(cursor.getColumnIndex(create_at))
                 val _latitude = cursor.getDouble(cursor.getColumnIndex(latitude))
                 val _longitude = cursor.getDouble(cursor.getColumnIndex(longitude))
 
+                if (_name.isNullOrBlank()){
+                     _name  = "NOT NULL"
+                }
 
                 histories.add(historyModel(_id,_name,_phone,_datetime,_latitude,_longitude))
             }while(cursor.moveToNext())
             cursor.close()
         }
+        histories
         return histories
     }
 }

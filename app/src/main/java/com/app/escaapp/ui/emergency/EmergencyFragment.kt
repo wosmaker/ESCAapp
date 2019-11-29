@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import com.app.escaapp.NavBar
 import com.app.escaapp.R
 import com.example.management.UsersDBHelper
+import com.example.management.savehistoryModel
 import kotlinx.android.synthetic.main.fragment_emergency.view.*
 import kotlinx.android.synthetic.main.navbar_botton.view.*
 
@@ -36,43 +37,38 @@ class EmergencyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         NavBar().setGo(2,view)
 
+        view.run{
+            btn_police.setOnClickListener {
+                callTo("0888590724")
+            }
 
-        view.btn_police.setOnClickListener{
-            callTo("0888590724")
-            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+            btn_hospital.setOnClickListener{
+                callTo("0888590724")
+            }
+
+            btn_relative.setOnClickListener{
+                callTo("0888590724")
+            }
+
+            btn_callHistory.setOnClickListener{
+                view.findNavController().navigate(R.id.emergency_history)
+            }
+
+            nav_emergency.setOnClickListener{
+                view.findNavController().navigate(R.id.emergency_callList)
+            }
+
         }
 
-        view.btn_hospital.setOnClickListener{
-            callTo("0888590724")
-            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
-
-        }
-
-        view.btn_relative.setOnClickListener{
-            callTo("0888590724")
-            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
-        }
-
-        call_list_manage(view)
-        call_history_manage(view)
     }
 
-    fun call_history_manage(view: View){
-        view.btn_callHistory.setOnClickListener {
-            view.findNavController().navigate(R.id.emergency_history)
-        }
-    }
-
-    fun call_list_manage(view: View){
-        view.nav_emergency.setOnClickListener {
-            view.findNavController().navigate(R.id.emergency_callList)
-        }
-    }
 
     fun callTo(phoneNumber: String){
         val intent = Intent(Intent.ACTION_CALL)
         if (isPermissionCall()){
             intent.data = Uri.parse("tel: $phoneNumber")
+            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+            db.saveHistory(savehistoryModel(0,phoneNumber,0.0,0.0))
             startActivity(intent)
         }
         else {
@@ -91,7 +87,6 @@ class EmergencyFragment : Fragment() {
         if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
             return true
         }
-
         Toast.makeText(activity,"Permission denied" , Toast.LENGTH_LONG).show()
         return false
     }

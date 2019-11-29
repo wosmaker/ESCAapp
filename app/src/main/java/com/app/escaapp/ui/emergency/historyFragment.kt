@@ -30,8 +30,7 @@ class historyFragment :Fragment(){
             view.findNavController().popBackStack()
         }
 
-        val history = db.showAllHistory()
-        view.dynamic_historyCall.adapter = historyAdapter(requireActivity(),R.layout.call_history_customview,history)
+        view.dynamic_historyCall.adapter = historyAdapter(requireActivity(),R.layout.call_history_customview,db.getAllHistory())
 
     }
 
