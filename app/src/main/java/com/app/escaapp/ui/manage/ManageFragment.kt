@@ -2,6 +2,7 @@ package com.app.escaapp.ui.manage
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ClipData
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,6 +16,8 @@ import androidx.core.view.marginTop
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.vvalidator.form
+import com.afollestad.vvalidator.util.hide
 import com.app.escaapp.IOBackPressed
 import com.app.escaapp.MainAppActivity
 import com.app.escaapp.NavBar
@@ -23,8 +26,9 @@ import com.example.management.UserModel
 import com.example.management.UsersDBHelper
 import kotlinx.android.synthetic.main.fragment_manage.*
 import kotlinx.android.synthetic.main.fragment_manage.view.*
-
-
+import kotlinx.android.synthetic.main.fragment_mange_addcontact.view.*
+import kotlinx.android.synthetic.main.pop_cancel_confirm.*
+import kotlinx.android.synthetic.main.pop_cancel_confirm.view.*
 
 
 class ManageFragment() : Fragment() {
@@ -64,7 +68,8 @@ class ManageFragment() : Fragment() {
                 layoutManager = LinearLayoutManager(activity)
                 adapter = UserAdapter(requireActivity(),customByUser)
             }
-            adapter.notifyDataSetChanged()
+            adapter.setNotifyOnChange(true)
+
 
 //
 //            val adapter  = userAdapter(requireActivity(),R.layout.user_customview,customByUser)
@@ -98,6 +103,65 @@ class ManageFragment() : Fragment() {
         }
     }
 
+    private fun addContactData(view :View, builder: AlertDialog) {
+        form{
+            input(view.Name_){
+                isNotEmpty().description("Please Input Contact Name ")
+                length().atLeast(2)
+                length().atMost(50)
+            }
+
+            input(view.Phone_){
+                isNotEmpty().description("Please Input Phone Number")
+                isNumber().description("Please user Number only")
+                length().atLeast(2).description("Phone number at less 2")
+                length().atMost(11).description("Phone number at most 10")
+
+            }
+
+            input(view.Relationship_){
+                isNotEmpty().description("Please Input your relationship")
+                length().atLeast(2)
+                length().atMost(15)
+            }
+
+            view.btn_Cancel.setOnClickListener {
+                val mDialog = LayoutInflater.from(requireContext()).inflate(R.layout.pop_cancel_confirm,null)
+                val dialog = AlertDialog.Builder(requireContext())
+                    .setView(mDialog)
+                    .create()
+
+                dialog.show()
+
+                mDialog.Yes.setOnClickListener{
+                    dialog.dismiss()
+                    builder.dismiss()
+                }
+
+                mDialog.No.setOnClickListener{
+                    dialog.dismiss()
+                }
+            }
+
+
+            submitWith(view.btn_Add){
+                try{
+                    lateinit var user : UserModel
+                    val id = 0
+                    val relate_name = view.Name_.text.toString()
+                    val phone_no = view.Phone_.text.toString()
+                    val relation = "1212"
+                    val result = db.addUser(UserModel(id,relate_name,phone_no,relation,true))
+
+                    Toast.makeText(activity,"Added user :: $result",Toast.LENGTH_LONG).show()
+                }catch (e : java.lang.Exception){
+                    Toast.makeText(activity,"Error :: $e",Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+    }
+
     private fun error(e:Exception){
         Toast.makeText(requireContext(),"Error $e",Toast.LENGTH_LONG).show()
     }
@@ -109,7 +173,13 @@ class ManageFragment() : Fragment() {
         view.Cancel.setOnClickListener{End_Anime(view)}
         view.Done.setOnClickListener{End_Anime((view))}
         view.Add.setOnClickListener {
-            view.findNavController().navigate(R.id.manage_addContact)
+            val mDialog = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_mange_addcontact,null)
+            val mBuilder = AlertDialog.Builder(requireContext())
+                .setView(mDialog)
+                .create()
+
+            mBuilder.show()
+            addContactData(mDialog,mBuilder)
         }
     }
 

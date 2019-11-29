@@ -142,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginBottom="30dp"
-            android:background="@drawable/rounden_button"
+            android:background="@drawable/round_popup"
             android:fontFamily="@font/roboto_light"
             android:text="Edit"
 
