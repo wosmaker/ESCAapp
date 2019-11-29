@@ -31,6 +31,7 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
 
     fun addLocation( model: LocationModel):Boolean{
         val values = ContentValues()
+        values.put(id,model.id)
         values.put(name,model.name)
         values.put(latitude,model.latitude)
         values.put(longitude,model.longitude)
@@ -78,7 +79,7 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
     }
 
     fun deleteTable(){
-        writableDatabase.execSQL("delete from $table_name where $id = 6")
+        writableDatabase.execSQL("delete from $table_name")
     }
 
 }

@@ -35,6 +35,7 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
     private lateinit var mLocationSettingsRequest: LocationSettingsRequest
     private var parentLinearLayout: LinearLayout? = null
     private var edtBtnEnb = true
+    private var latestID = 0
 
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
@@ -65,9 +66,9 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         //view.findViewById<View>(R.id.delete_button).visibility = View.GONE
         db = DB_saveLocattion(context!!)
 
-        db.deleteTable()
-        var x = 3
-        var temp1 = db.getLocationAll()
+        //db.deleteTable()
+        // var x = 3
+        //var temp1 = db.getLocationAll()
         //parentLinearLayout!!.addView(view.findViewById(R.id.first_row), parentLinearLayout!!.childCount)
         // mFusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
         // mSettingsClient = LocationServices.getSettingsClient(activity!!)
@@ -115,8 +116,8 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
                 view!!.findViewById<View>(R.id.add_field_button).visibility = View.GONE
                 view.findViewById<View>(R.id.edit_location_first).visibility = View.GONE
                 for (i in 0 until parentLinearLayout!!.childCount) {
-                    var temp1 = db.getLocationAll()
-                    var temp = db.updateLocation(LocationModel(i, parentLinearLayout!!.getChildAt(i).edit_text.text.toString(), 0.0, 0.0), true, false, false)
+                    // var temp1 = db.getLocationAll()
+                    db.updateLocation(LocationModel(parentLinearLayout!!.getChildAt(i).id, parentLinearLayout!!.getChildAt(i).edit_text.text.toString(), 0.01, 0.01), true, false, false)
                     parentLinearLayout!!.getChildAt(i).edit_text.isEnabled = false
                     parentLinearLayout!!.getChildAt(i).delete_button.visibility = View.GONE
                     parentLinearLayout!!.getChildAt(i).edit_location.visibility = View.GONE
@@ -134,9 +135,13 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
             //rowView.delete_button.visibility = View.GONE
 
             // Add the new row before the add field button.
-            db.addLocation(LocationModel(parentLinearLayout!!.childCount,"",0.00,0.00))
+            //var x =parentLinearLayout!!.childCount
+
+            db.addLocation(LocationModel(latestID, "", 0.00, 0.00))
+            var xxxx = latestID
+            rowView.id = latestID++
             rowView.delete_button.setOnClickListener {
-                db.deleteLocation((parentLinearLayout!!.indexOfChild(rowView)).toString())
+                db.deleteLocation(rowView.id.toString())
                 parentLinearLayout!!.removeView(rowView)
             }
 
@@ -150,8 +155,8 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         view.findViewById<View>(R.id.edit_location_first).visibility = View.GONE
         view.findViewById<View>(R.id.add_field_button).visibility = View.GONE
         //db.addLocation(LocationModel(-1,"testgetfromdb",0.00,0.00))
-        db.deleteTable()
-        var i =db.getLocationAll().size
+        //  db.deleteTable()
+        //var i =db.getLocationAll().size
         for (item in db.getLocationAll()) {
             val inflater =
                     activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -163,9 +168,11 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
             rowView.edit_text.isEnabled = false
             // Add the new row before the add field button.
             rowView.edit_text.setText(item.name)
+            rowView.id = item.id
+            latestID = item.id+1
             rowView.delete_button.setOnClickListener {
-                println(parentLinearLayout!!.indexOfChild(rowView))
-                db.deleteLocation(parentLinearLayout!!.indexOfChild(rowView).toString())
+                println(rowView.id.toString())
+                db.deleteLocation(rowView.id.toString())
                 parentLinearLayout!!.removeView(rowView)
             }
 
