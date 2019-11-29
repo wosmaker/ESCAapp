@@ -18,7 +18,7 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
         const val latitude = "latitude_value"
         const val longitude = "longitude_value"
 
-        const val SQL_CREATE = "create table $table_name ($id autoincrement primary key not null,$name varchar,$latitude real, $longitude real)"
+        const val SQL_CREATE = "create table $table_name ($id integer primary key not null,$name varchar,$latitude real, $longitude real)"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -31,6 +31,7 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
 
     fun addLocation( model: LocationModel):Boolean{
         val values = ContentValues()
+        values.put(id,model.id)
         values.put(name,model.name)
         values.put(latitude,model.latitude)
         values.put(longitude,model.longitude)
@@ -63,6 +64,22 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
             }while(cursor.moveToNext())
         }
         return locations
+    }
+
+    fun updateLocation( model: LocationModel, updtnm : Boolean, updtlat : Boolean, updtlot : Boolean):Boolean{
+        val values = ContentValues()
+        val select = "$id = ?"
+        if(updtnm) values.put(name,model.name)
+        if(updtlat)values.put(latitude,model.latitude)
+        if(updtlot)values.put(longitude,model.longitude)
+        val selectArgs = arrayOf(model.id.toString())
+        val success = writableDatabase.update(table_name,values,select,selectArgs)
+        return (Integer.parseInt("$success") != -1)
+
+    }
+
+    fun deleteTable(){
+        writableDatabase.execSQL("delete from $table_name")
     }
 
 }
