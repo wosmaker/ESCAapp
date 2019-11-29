@@ -1,5 +1,6 @@
 package com.app.escaapp.ui.emergency
 
+import android.Manifest.permission_group.SMS
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -7,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.telephony.SmsManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +25,8 @@ import kotlinx.android.synthetic.main.fragment_call_history.view.*
 import kotlinx.android.synthetic.main.fragment_call_list.view.*
 import kotlinx.android.synthetic.main.navbar_botton.view.*
 import kotlinx.android.synthetic.main.popup_deleteall.view.*
+
+
 
 class callListFragment : Fragment() {
     lateinit var db: UsersDBHelper
@@ -85,11 +89,16 @@ class callListFragment : Fragment() {
         }
     }
 
-    fun smsTo(phoneNumber: String) {
+    fun smsTo2(phoneNumber: String) {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("smsto: $phoneNumber")
         intent.putExtra("sms_body", "Here goes your message... from wos")
         startActivity(intent)
+    }
+
+    fun smsTo(phoneNumber : String){
+        val text = "Test send sms  message... from wos phone $phoneNumber"
+        SmsManager.getDefault().sendTextMessage(phoneNumber,null,text,null,null)
     }
 
     fun isPermissionCall():Boolean {

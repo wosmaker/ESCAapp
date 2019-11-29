@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.telephony.SmsManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -87,11 +88,16 @@ class EmergencyFragment : Fragment() {
         }
     }
 
-    fun smsTo(phoneNumber: String) {
+    fun smsTo2(phoneNumber: String) {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("smsto: $phoneNumber")
         intent.putExtra("sms_body", "Here goes your message... from wos")
         startActivity(intent)
+    }
+
+    fun smsTo(phoneNumber : String){
+        val text = "Test send sms  message... from wos phone $phoneNumber"
+        SmsManager.getDefault().sendTextMessage(phoneNumber,null,text,null,null)
     }
 
     fun isPermissionCall():Boolean {
