@@ -19,6 +19,10 @@ import kotlinx.android.synthetic.main.user_customview.view.*
 
 class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     private var datasource = ArrayList<UserModel>()
+    private var oldList = ArrayList<UserModel>()
+    private var deleteQ = ArrayList<UserModel>()
+
+    var edit_mode = false
 
     class UserViewHolder(val activity: Activity,itemView :View) : RecyclerView.ViewHolder(itemView) {
 
@@ -42,17 +46,18 @@ class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserV
 
         holder.relate_name.text = user.relate_name
         holder.phone_no.text = user.phone_no
+        if (edit_mode){
+            holder.btn_delete.visibility = View.VISIBLE
+        }
+        else{
+            holder.btn_delete.visibility = View.INVISIBLE
+        }
+
         holder.btn_delete.setOnClickListener {
-            val db = UsersDBHelper(activity)
-            if(db.deleteUser(user.id)){
-                datasource.removeAt(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position,datasource.size)
-                Toast.makeText(activity, "Deleting $user ", Toast.LENGTH_LONG).show()
-            }
-            else{
-                Toast.makeText(activity, "Error Deleting ", Toast.LENGTH_LONG).show()
-            }
+            deleteQ.add(user)
+            datasource.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position,datasource.size)
 
         }
 
@@ -66,6 +71,28 @@ class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserV
         datasource.clear()
         datasource.addAll(newList) // Add new item to exist list
         diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
+        deleteQ.clear()
+    }
+
+    fun getDelete(): ArrayList<UserModel>{
+        return deleteQ
+    }
+
+    fun addItem(user : UserModel){
+        datasource.add(user)
+        notifyDataSetChanged()
+    }
+
+    fun backupOldList(){
+        oldList = datasource.clone() as ArrayList<UserModel>
+    }
+
+    fun restoreOldList(){
+        datasource = oldList.clone() as ArrayList<UserModel>
+        oldList.clear()
+        deleteQ.clear()
+        notifyDataSetChanged()
     }
 
 }

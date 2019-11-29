@@ -77,7 +77,13 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         return (Integer.parseInt("$rowId") != -1)
     }
 
-    fun deleteAllUser(){
+    fun deleteAllUser(users:ArrayList<UserModel>){
+        users.forEach {
+            deleteUser(it.id)
+        }
+    }
+
+    fun formatUser(){
         writableDatabase.execSQL("delete from $table_user")
     }
 

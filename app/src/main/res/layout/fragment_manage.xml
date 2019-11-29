@@ -121,7 +121,7 @@
                         android:background="@drawable/add"
                         android:gravity="bottom|center_vertical"
                         android:textAlignment="center"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>
