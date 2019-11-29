@@ -13,9 +13,10 @@ import com.app.escaapp.R
 import com.example.management.UserModel
 import com.example.management.UsersDBHelper
 import kotlinx.android.synthetic.main.call_history_customview.view.*
+import kotlinx.android.synthetic.main.fragment_manage.view.*
 import kotlinx.android.synthetic.main.user_customview.view.*
 
-class UserAdapter(val activity: Activity, private val list: ArrayList<UserModel>):RecyclerView.Adapter<UserViewHolder>() {
+class UserAdapter(val exview:View ,val activity: Activity, private val list: ArrayList<UserModel>):RecyclerView.Adapter<UserViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder =
         LayoutInflater.from(parent.context)
@@ -26,23 +27,37 @@ class UserAdapter(val activity: Activity, private val list: ArrayList<UserModel>
 
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bind(list[position])
+        val user = list[position]
+
+        holder.relate_name.text = user.relate_name
+        holder.phone_no.text = user.phone_no
+        holder.btn_delete.setOnClickListener {
+            val db = UsersDBHelper(activity)
+            if(db.deleteUser(user.id)){
+                list.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position,list.size)
+                Toast.makeText(activity, "Deleting $user ", Toast.LENGTH_LONG).show()
+            }
+            else{
+                Toast.makeText(activity, "Error Deleting ", Toast.LENGTH_LONG).show()
+            }
+
+        }
+
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount():Int{
+        return list.size
+    }
+
 }
 
 
 class UserViewHolder(val activity: Activity,itemView :View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(user: UserModel) {
-        itemView.relate_name.text = user.relate_name
-        itemView.phone_no.text = user.phone_no
+    val relate_name = itemView.relate_name
+    val phone_no = itemView.phone_no
+    val btn_delete = itemView.btn_delete
 
-        itemView.btn_delete.setOnClickListener {
-            Toast.makeText(activity, "Hellow test ", Toast.LENGTH_LONG).show()
-
-        }
-
-    }
 }

@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 val users = initital()
                 val db = UsersDBHelper(this)
-                db.addAllUesr(users)
+                db.addAllUser(users)
             }catch (e:Exception){  Toast.makeText(this,"Error $e", Toast.LENGTH_LONG).show() }
 
             val intent = Intent(this, FirstTime::class.java)

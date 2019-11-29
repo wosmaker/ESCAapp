@@ -63,7 +63,7 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         return (Integer.parseInt("$rowId") != -1)
     }
 
-    fun addAllUesr(users : ArrayList<UserModel>){
+    fun addAllUser(users : ArrayList<UserModel>){
         users.forEach {
             addUser(it)
             Log.d("dbaddtest",it.toString())

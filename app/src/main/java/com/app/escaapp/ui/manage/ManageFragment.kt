@@ -34,28 +34,26 @@ import kotlinx.android.synthetic.main.pop_cancel_confirm.view.*
 class ManageFragment() : Fragment() {
 
     lateinit var db: UsersDBHelper
-    lateinit var adapter:userAdapter
+    lateinit var exview : View
 
-    var items:MutableList<UserModel> = ArrayList()
-
-    fun onLoadMore(){
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         db = UsersDBHelper(requireContext())
-
         return inflater.inflate(R.layout.fragment_manage, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        exview = view
+
         NavBar().setGo(3, view)
         Edit_state(view)
+        viewUser(view)
 
-        try{
+
+        view.Edit.setOnLongClickListener {
             val users = db.getAllUser()
             val customByUser = ArrayList<UserModel>()
             users.forEach {
@@ -63,44 +61,31 @@ class ManageFragment() : Fragment() {
                     customByUser.add(it)
                 }
             }
-
-            view.userListView.apply {
-                layoutManager = LinearLayoutManager(activity)
-                adapter = UserAdapter(requireActivity(),customByUser)
-            }
-            adapter.setNotifyOnChange(true)
-
-
-//
-//            val adapter  = userAdapter(requireActivity(),R.layout.user_customview,customByUser)
-//            view.userListView.adapter =  adapter
-        }catch (e:Exception){error(e)}
-
-
-//        view.userListView.setOnItemLongClickListener { adapterView, view, position, id ->
-//            val itemAtPos = adapterView.getItemAtPosition(position) as UserModel
-//            val itemIdAtPos = adapterView.getItemIdAtPosition(position)
-//            try{
-//                Toast.makeText(
-//                    requireContext(),
-//                    "Click on item at ${itemAtPos.relate_name} its item id $itemIdAtPos",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//
-//                view.userListView.removeViewAt(position)
-//                adapter.notifyDataSetChanged()
-//
-//            }catch (e:Exception)
-//            {
-//                Toast.makeText(requireContext(),"Error $e",Toast.LENGTH_LONG).show()
-//            }
-//
-//            true
-//        }
-
-        view.Edit.setOnLongClickListener {
+            Toast.makeText(activity," user :: $customByUser",Toast.LENGTH_LONG).show()
             true
         }
+    }
+
+    override fun onResume() {
+        viewUser(exview)
+        super.onResume()
+
+    }
+
+    private fun viewUser(view:View){
+        val users = db.getAllUser()
+        val customByUser = ArrayList<UserModel>()
+        users.forEach {
+            if (it.byUser){
+                customByUser.add(it)
+            }
+        }
+        Toast.makeText(activity," user :: $customByUser",Toast.LENGTH_LONG).show()
+        view.userListView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = UserAdapter(view,requireActivity(),customByUser)
+        }
+        view.userListView.adapter!!.notifyDataSetChanged()
     }
 
     private fun addContactData(view :View, builder: AlertDialog) {
@@ -150,10 +135,14 @@ class ManageFragment() : Fragment() {
                     val id = 0
                     val relate_name = view.Name_.text.toString()
                     val phone_no = view.Phone_.text.toString()
-                    val relation = "1212"
+                    val relation = view.Relationship_.text.toString()
                     val result = db.addUser(UserModel(id,relate_name,phone_no,relation,true))
 
                     Toast.makeText(activity,"Added user :: $result",Toast.LENGTH_LONG).show()
+                    val count = exview.userListView.adapter!!.itemCount
+                    exview.userListView.adapter!!.notifyItemInserted(count)
+                    exview.userListView.adapter!!.notifyDataSetChanged()
+                    builder.dismiss()
                 }catch (e : java.lang.Exception){
                     Toast.makeText(activity,"Error :: $e",Toast.LENGTH_LONG).show()
                 }
