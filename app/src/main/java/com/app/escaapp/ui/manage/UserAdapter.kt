@@ -1,20 +1,14 @@
 package com.app.escaapp.ui.manage
 
 import android.app.Activity
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.escaapp.R
 import com.example.management.UserModel
-import com.example.management.UsersDBHelper
-import kotlinx.android.synthetic.main.call_history_customview.view.*
-import kotlinx.android.synthetic.main.fragment_manage.view.*
 import kotlinx.android.synthetic.main.user_customview.view.*
 
 class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
@@ -63,13 +57,13 @@ class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserV
     }
 
     fun insertItem(newList : ArrayList<UserModel>){
-        val diffUtil = userDiffUtilCallback(datasource,newList)
-        val diffResult:DiffUtil.DiffResult = DiffUtil.calculateDiff(diffUtil)
+//        val diffUtil = userDiffUtilCallback(datasource,newList)
+//        val diffResult:DiffUtil.DiffResult = DiffUtil.calculateDiff(diffUtil)
 
-        Toast.makeText(activity,"DiffUtil --> $diffResult",Toast.LENGTH_LONG)
+//        Toast.makeText(activity,"DiffUtil --> $diffResult",Toast.LENGTH_LONG)
         datasource.clear()
         datasource.addAll(newList) // Add new item to exist list
-        diffResult.dispatchUpdatesTo(this)
+//        diffResult.dispatchUpdatesTo(this)
         notifyDataSetChanged()
         deleteQ.clear()
     }

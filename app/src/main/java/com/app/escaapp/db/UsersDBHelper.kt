@@ -168,4 +168,15 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         histories
         return histories
     }
+
+    fun deleteHistory(historyId:Int):Boolean{
+        val sel = "$history_id like ?"
+        val selectArgs = arrayOf(historyId.toString())
+        val rowId = writableDatabase.delete(table_history,sel,selectArgs)
+        return (Integer.parseInt("$rowId") != -1)
+    }
+
+    fun deleteAllHistory(){
+        writableDatabase.execSQL("delete from $table_history")
+    }
 }

@@ -1,5 +1,6 @@
 package com.app.escaapp.ui.emergency
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -18,8 +19,10 @@ import com.app.escaapp.ui.manage.ListAdapter
 import com.example.management.UserModel
 import com.example.management.UsersDBHelper
 import com.example.management.savehistoryModel
+import kotlinx.android.synthetic.main.fragment_call_history.view.*
 import kotlinx.android.synthetic.main.fragment_call_list.view.*
 import kotlinx.android.synthetic.main.navbar_botton.view.*
+import kotlinx.android.synthetic.main.popup_deleteall.view.*
 
 class callListFragment : Fragment() {
     lateinit var db: UsersDBHelper
@@ -39,8 +42,9 @@ class callListFragment : Fragment() {
         val spName = "App_config"
         sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
 
-        view.run{
-            dynamic_call_list.adapter =  ListAdapter(requireActivity(),R.layout.user_customview,db.getAllUser())
+        view.run {
+            dynamic_call_list.adapter =
+                ListAdapter(requireActivity(), R.layout.user_customview, db.getAllUser())
             dynamic_call_list.setOnItemClickListener { adapterView, view, position, id ->
                 val item = adapterView.getItemAtPosition(position) as UserModel
                 callTo(item.phone_no)
@@ -49,7 +53,6 @@ class callListFragment : Fragment() {
                 view.findNavController().popBackStack()
             }
         }
-
     }
 
     fun init(view:View){

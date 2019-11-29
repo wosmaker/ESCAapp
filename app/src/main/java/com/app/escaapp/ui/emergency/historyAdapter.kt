@@ -34,7 +34,7 @@ class historyAdapter(activity: Activity, resource : Int = R.layout.call_history_
         val rowView = vi.inflate(resource,null,true)
 
         rowView.name.text = list[position].name
-        rowView.time.text = list[position].datetime
+//        rowView.time.text = list[position].datetime
         rowView.phone.text = list[position].desPhone
 
         return rowView

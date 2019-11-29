@@ -1,7 +1,9 @@
 package com.app.escaapp.ui.emergency
 
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -25,6 +27,7 @@ import kotlinx.android.synthetic.main.navbar_botton.view.*
 class EmergencyFragment : Fragment() {
 
     lateinit var db: UsersDBHelper
+    lateinit var sp: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +39,8 @@ class EmergencyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         NavBar().setGo(2,view)
-
+        val spName = "App_config"
+        sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
         view.run{
             btn_police.setOnClickListener {
                 callTo("0888590724")
@@ -68,7 +72,14 @@ class EmergencyFragment : Fragment() {
         if (isPermissionCall()){
             intent.data = Uri.parse("tel: $phoneNumber")
             Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
-            db.saveHistory(savehistoryModel(0,phoneNumber,0.0,0.0))
+            if(sp.getBoolean("recordCallHistory",true)){
+                db.saveHistory(savehistoryModel(0,phoneNumber,0.0,0.0))
+            }
+            if(sp.getBoolean("gpsTrack",true)){
+                if(sp.getBoolean("gpsSMS",true)){
+                    smsTo(phoneNumber)
+                }
+            }
             startActivity(intent)
         }
         else {

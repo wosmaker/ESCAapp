@@ -45,7 +45,6 @@ class ManageFragment() : Fragment() {
     }
 
     private fun initRecycleView(view:View):UserAdapter{
-        Toast.makeText(activity," user :: ${db.getAllCustom()}",Toast.LENGTH_LONG).show()
         val Adapter_ =  UserAdapter(requireActivity())
         Adapter_.insertItem(db.getAllCustom())
         view.userListView.apply {
