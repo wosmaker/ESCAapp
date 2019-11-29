@@ -1,24 +1,39 @@
 package com.app.escaapp.ui.location
 
 
+import android.app.AlertDialog
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.vvalidator.form
 import com.app.escaapp.NavBar
 import com.app.escaapp.R
 import com.app.escaapp.db.DB_saveLocattion
 import com.app.escaapp.db.LocationModel
+import com.app.escaapp.ui.manage.UserAdapter
+import com.example.management.UserModel
+import com.example.management.UsersDBHelper
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.GoogleMap
 import kotlinx.android.synthetic.main.field.view.*
-import kotlinx.android.synthetic.main.field.view.delete_button
+//import kotlinx.android.synthetic.main.field.view.delete_button
+import kotlinx.android.synthetic.main.fragment_location_addlocation.view.*
+import kotlinx.android.synthetic.main.fragment_manage.view.*
+import kotlinx.android.synthetic.main.fragment_mange_addcontact.view.*
+import kotlinx.android.synthetic.main.fragment_mange_addcontact.view.btn_Add
+import kotlinx.android.synthetic.main.fragment_mange_addcontact.view.btn_Cancel
+import kotlinx.android.synthetic.main.pop_cancel_confirm.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -49,6 +64,12 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
     }
 
 
+
+    lateinit var locationAdapter : LocationAdapter
+
+    private var edit_mode = false
+    private val buffer = ArrayList<LocationModel>()
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -62,9 +83,12 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
 
         val spName = "Location"
         val sp = activity!!.getSharedPreferences(spName, Context.MODE_PRIVATE)
-        parentLinearLayout = view.findViewById<View>(R.id.parent_linear_layout) as LinearLayout
+        //parentLinearLayout = view.findViewById<View>(R.id.parent_linear_layout) as LinearLayout
         //view.findViewById<View>(R.id.delete_button).visibility = View.GONE
         db = DB_saveLocattion(context!!)
+
+        locationAdapter = initRecycleView(view)
+        Edit_state(view)
 
         //db.deleteTable()
         // var x = 3
@@ -74,8 +98,8 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         // mSettingsClient = LocationServices.getSettingsClient(activity!!)
 
         NavBar().setGo(1, view)
-        viewInit(view)
-        btnListener(view)
+       // viewInit(view)
+        //btnListener(view)
 
         // Kick off the process of building the LocationCallback, LocationRequest, and
         // LocationSettingsRequest objects.
@@ -99,7 +123,172 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         //getLocation(view)
     }
 
-    private fun btnListener(view: View) {
+    private fun initRecycleView(view:View): LocationAdapter {
+        //Toast.makeText(activity," user :: ${db.getAllCustom()}", Toast.LENGTH_LONG).show()
+        val Adapter_ =  LocationAdapter(requireActivity())
+        Adapter_.insertItem(db.getLocationAll())
+        view.userListView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = Adapter_
+        }
+        return Adapter_
+    }
+
+    private fun disChange(view : View){
+        locationAdapter.run{
+            this.edit_mode = false
+            restoreOldList()
+            notifyDataSetChanged()
+        }
+
+        buffer.clear()
+        End_Anime(view)
+    }
+
+    private fun discardChange(view :View) {
+        val popView = LayoutInflater.from(requireContext()).inflate(R.layout.discard_change, null)
+        val dialog = AlertDialog.Builder(requireContext())
+                .setView(popView)
+                .create()
+        dialog.show()
+
+        popView.run{
+            No.setOnClickListener { dialog.dismiss() }
+            Yes.setOnClickListener {
+                disChange(view)
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun Edit_state(view:View){
+
+        view.Edit.setOnClickListener {
+            Start_Anime(view)
+            locationAdapter.run{
+                edit_mode = true
+                backupOldList()
+                notifyDataSetChanged()
+            }
+            buffer.clear()
+        }
+
+        view.Cancel.setOnClickListener{
+            discardChange(view)
+        }
+
+        view.Done.setOnClickListener{
+            db.run {
+                deleteAllLocation(locationAdapter.getDelete())
+                addAllLocation(buffer)
+            }
+
+            locationAdapter.run{
+                this.edit_mode  = false
+                insertItem(db.getLocationAll())
+            }
+            End_Anime(view)
+            buffer.clear()
+        }
+
+        view.Add.setOnClickListener {
+            val addUserDialog = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_location_addlocation,null)
+            val addBuilder = AlertDialog.Builder(requireContext())
+                    .setView(addUserDialog)
+                    .create()
+
+            addBuilder.show()
+            addContactData(addUserDialog,addBuilder)
+        }
+    }
+
+    private fun addContactData(view :View, builder: AlertDialog) {
+        form{
+            input(view.location_name){
+                isNotEmpty().description("Please Input Contact Name ")
+                length().atLeast(2)
+                length().atMost(50)
+            }
+
+
+            view.btn_Cancel.setOnClickListener {
+                val exitDialog = LayoutInflater.from(requireContext()).inflate(R.layout.pop_cancel_confirm,null)
+                val exitBuild = AlertDialog.Builder(requireContext())
+                        .setView(exitDialog)
+                        .create()
+
+                exitBuild.show()
+
+                exitDialog.Yes.setOnClickListener{
+                    exitBuild.dismiss()
+                    builder.dismiss()
+                }
+
+                exitDialog.No.setOnClickListener{
+                    exitBuild.dismiss()
+                }
+            }
+
+            submitWith(view.btn_Add){
+                try{
+                    val user = LocationModel(
+                            0,
+                            view.location_name.text.toString(),
+                            0.00,
+                            0.00)
+                    buffer.add(user)
+                    locationAdapter.addItem(user)
+                    Log.d("adapter","buffer check -> $buffer")
+                    builder.dismiss()
+                }catch (e : Exception){error(e) }
+            }
+        }
+    }
+    private fun Start_Anime(view:View){
+        val fade = AnimationUtils.loadAnimation(requireContext(), R.anim.fade)
+        val sd = AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down)
+        val sd_add = AnimationUtils.loadAnimation(requireContext(),R.anim.fade_in)
+
+        view.run{
+            block.startAnimation(sd)
+            block.translationY = 30F
+
+            Add.startAnimation(sd_add)
+            Done.startAnimation(sd_add)
+            Cancel.startAnimation(sd_add)
+
+            Edit.startAnimation(fade)
+
+            Cancel.visibility =  View.VISIBLE
+            Done.visibility =  View.VISIBLE
+            Add.visibility = View.VISIBLE
+
+            Edit.visibility = View.INVISIBLE
+        }
+
+
+    }
+
+    private fun End_Anime(view: View){
+
+        val sd = AnimationUtils.loadAnimation(activity, R.anim.slide_up)
+        val sd_add = AnimationUtils.loadAnimation(activity,R.anim.fade_out)
+        view.run{
+            block.translationY = 0F
+            block.startAnimation(sd)
+
+            Add.startAnimation(sd_add)
+            Cancel.startAnimation(sd_add)
+            Done.startAnimation(sd_add)
+
+            Edit.visibility = View.VISIBLE
+            Cancel.visibility = View.INVISIBLE
+            Done.visibility = View.INVISIBLE
+            Add.visibility = View.GONE
+        }
+    }
+
+   /* private fun btnListener(view: View) {
         view.findViewById<View>(R.id.edtBtn).setOnClickListener {
             if (edtBtnEnb) {
                 view!!.findViewById<View>(R.id.add_field_button).visibility = View.VISIBLE
@@ -179,7 +368,7 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
             parentLinearLayout!!.addView(rowView, parentLinearLayout!!.childCount)
         }
 
-    }
+    }*/
     /* private fun createLocationCallback() {
          mLocationCallback = object : LocationCallback() {
              override fun onLocationResult(locationResult: LocationResult) {

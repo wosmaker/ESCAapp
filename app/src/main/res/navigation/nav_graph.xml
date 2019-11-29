@@ -98,7 +98,11 @@
             android:id="@+id/locationFragment"
             android:name="com.app.escaapp.ui.location.LocationFragment"
             android:label="fragment_location"
-            tools:layout="@layout/fragment_location" />
+            tools:layout="@layout/fragment_location" >
+            <action
+                android:id="@+id/action_locationFragment_to_add_Location"
+                app:destination="@id/add_Location" />
+        </fragment>
         <action
             android:id="@+id/action_location_profile"
             app:destination="@id/Profile"
@@ -111,6 +115,10 @@
             android:id="@+id/action_location_setting"
             app:destination="@id/Setting"
             app:popUpTo="@+id/Location" />
+        <fragment
+            android:id="@+id/add_Location"
+            android:name="com.app.escaapp.ui.location.Add_Location"
+            android:label="Add_Location" />
     </navigation>
     <navigation
         android:id="@+id/Manage"

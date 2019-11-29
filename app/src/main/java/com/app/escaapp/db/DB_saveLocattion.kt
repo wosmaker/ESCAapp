@@ -4,6 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import com.example.management.UserModel
+import com.example.management.UsersDBHelper
 
 
 data class LocationModel(val id:Int ,val name:String, val latitude:Double, val longitude:Double)
@@ -18,7 +21,7 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
         const val latitude = "latitude_value"
         const val longitude = "longitude_value"
 
-        const val SQL_CREATE = "create table $table_name ($id integer primary key not null,$name varchar,$latitude real, $longitude real)"
+        const val SQL_CREATE = "create table $table_name ($id integer primary key autoincrement not null,$name varchar,$latitude real, $longitude real)"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -31,7 +34,7 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
 
     fun addLocation( model: LocationModel):Boolean{
         val values = ContentValues()
-        values.put(id,model.id)
+       // values.put(id,model.id)
         values.put(name,model.name)
         values.put(latitude,model.latitude)
         values.put(longitude,model.longitude)
@@ -80,4 +83,16 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
         writableDatabase.execSQL("delete from $table_name")
     }
 
+    fun deleteAllLocation(location:ArrayList<LocationModel>){
+        location.forEach {
+            deleteLocation(it.id.toString())
+        }
+    }
+
+    fun addAllLocation(location : ArrayList<LocationModel>){
+        location.forEach {
+            addLocation(it)
+            Log.d("dbaddtest",it.toString())
+        }
+    }
 }
