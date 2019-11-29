@@ -14,9 +14,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.navigation.findNavController
 import com.app.escaapp.NavBar
 import com.app.escaapp.R
+import com.app.escaapp.ui.manage.userAdapter
+import com.example.management.UserModel
+import com.example.management.UsersDBHelper
+import kotlinx.android.synthetic.main.fragment_call_list.view.*
+import kotlinx.android.synthetic.main.fragment_emergency.*
 import kotlinx.android.synthetic.main.fragment_emergency.view.*
+import kotlinx.android.synthetic.main.fragment_manage.view.*
+import kotlinx.android.synthetic.main.navbar_botton.view.*
 import java.text.NumberFormat
 
 /**
@@ -24,24 +32,49 @@ import java.text.NumberFormat
  */
 class EmergencyFragment : Fragment() {
 
+    lateinit var db: UsersDBHelper
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_emergency, container, false)
-
-        return view
+        db = UsersDBHelper(requireContext())
+        return inflater.inflate(R.layout.fragment_emergency, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         NavBar().setGo(2,view)
 
-        view.test1.text = "Hello Emergency"
-        view.call.setOnClickListener {
-            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+
+        view.btn_police.setOnClickListener{
             callTo("0888590724")
-            //smsTo("0888590724")
+            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+        }
+
+        view.btn_hospital.setOnClickListener{
+            callTo("0888590724")
+            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+
+        }
+
+        view.btn_relative.setOnClickListener{
+            callTo("0888590724")
+            Toast.makeText(activity,"calling" , Toast.LENGTH_LONG).show()
+        }
+
+        call_list_manage(view)
+        call_history_manage(view)
+    }
+
+    fun call_history_manage(view: View){
+        view.btn_callHistory.setOnClickListener {
+            view.findNavController().navigate(R.id.emergency_history)
+        }
+    }
+
+    fun call_list_manage(view: View){
+        view.nav_emergency.setOnClickListener {
+            view.findNavController().navigate(R.id.emergency_callList)
         }
     }
 
