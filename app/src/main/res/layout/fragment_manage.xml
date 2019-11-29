@@ -77,6 +77,7 @@
                 android:id="@+id/block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
                 android:background="@drawable/radius"
                 android:orientation="vertical">
 
@@ -95,27 +96,19 @@
                         app:srcCompat="@drawable/user_contact" />
                 </LinearLayout>
 
-                <ScrollView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/userListView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="100"
+                    android:padding="5dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/userListView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                        </androidx.recyclerview.widget.RecyclerView>
-                    </LinearLayout>
-                </ScrollView>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="0"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
@@ -124,10 +117,11 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginBottom="10dp"
+                        android:layout_weight="0"
                         android:background="@drawable/add"
                         android:gravity="bottom|center_vertical"
                         android:textAlignment="center"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
                 </LinearLayout>
 
             </LinearLayout>
