@@ -38,7 +38,6 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
 
         val success = writableDatabase.insert(table_name,null,values)
         return (Integer.parseInt("$success") != -1)
-
     }
 
     fun deleteLocation(locationId : String):Boolean{
@@ -46,7 +45,6 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
         val selectArgs = arrayOf(locationId)
         val success = writableDatabase.delete(table_name,select,selectArgs)
         return (Integer.parseInt("$success") != -1)
-
     }
 
     fun getLocationAll():ArrayList<LocationModel>{
