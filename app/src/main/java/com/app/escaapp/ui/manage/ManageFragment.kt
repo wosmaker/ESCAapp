@@ -35,6 +35,7 @@ class ManageFragment() : Fragment() {
 
     lateinit var db: UsersDBHelper
     lateinit var exview : View
+    lateinit var userAdapter : UserAdapter
 
 
     override fun onCreateView(
@@ -47,45 +48,21 @@ class ManageFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         exview = view
-
+        userAdapter = initRecycleView(view)
         NavBar().setGo(3, view)
         Edit_state(view)
-        viewUser(view)
-
-
-        view.Edit.setOnLongClickListener {
-            val users = db.getAllUser()
-            val customByUser = ArrayList<UserModel>()
-            users.forEach {
-                if (it.byUser){
-                    customByUser.add(it)
-                }
-            }
-            Toast.makeText(activity," user :: $customByUser",Toast.LENGTH_LONG).show()
-            true
-        }
-    }
-
-    override fun onResume() {
-        viewUser(exview)
-        super.onResume()
 
     }
 
-    private fun viewUser(view:View){
-        val users = db.getAllUser()
-        val customByUser = ArrayList<UserModel>()
-        users.forEach {
-            if (it.byUser){
-                customByUser.add(it)
-            }
-        }
-        Toast.makeText(activity," user :: $customByUser",Toast.LENGTH_LONG).show()
+    private fun initRecycleView(view:View):UserAdapter{
+        Toast.makeText(activity," user :: ${db.getAllCustom()}",Toast.LENGTH_LONG).show()
+        val Adapter_ =  UserAdapter(requireActivity())
+        Adapter_.insertItem(db.getAllCustom())
         view.userListView.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = UserAdapter(view,requireActivity(),customByUser)
+            adapter = Adapter_
         }
-        view.userListView.adapter!!.notifyDataSetChanged()
+        return Adapter_
     }
 
     private fun addContactData(view :View, builder: AlertDialog) {
@@ -128,24 +105,22 @@ class ManageFragment() : Fragment() {
                 }
             }
 
-
             submitWith(view.btn_Add){
                 try{
-                    lateinit var user : UserModel
-                    val id = 0
-                    val relate_name = view.Name_.text.toString()
-                    val phone_no = view.Phone_.text.toString()
-                    val relation = view.Relationship_.text.toString()
-                    val result = db.addUser(UserModel(id,relate_name,phone_no,relation,true))
+                    val result = db.addUser(
+                        UserModel(
+                        0,
+                            view.Name_.text.toString(),
+                            view.Phone_.text.toString(),
+                            view.Relationship_.text.toString(),
+                        true))
+
+                    userAdapter.insertItem(db.getAllCustom())
+                    userAdapter.notifyDataSetChanged()
 
                     Toast.makeText(activity,"Added user :: $result",Toast.LENGTH_LONG).show()
-                    val count = exview.userListView.adapter!!.itemCount
-                    exview.userListView.adapter!!.notifyItemInserted(count)
-                    exview.userListView.adapter!!.notifyDataSetChanged()
                     builder.dismiss()
-                }catch (e : java.lang.Exception){
-                    Toast.makeText(activity,"Error :: $e",Toast.LENGTH_LONG).show()
-                }
+                }catch (e : Exception){error(e) }
             }
         }
 
@@ -154,7 +129,6 @@ class ManageFragment() : Fragment() {
     private fun error(e:Exception){
         Toast.makeText(requireContext(),"Error $e",Toast.LENGTH_LONG).show()
     }
-
 
 
     private fun Edit_state(view:View){

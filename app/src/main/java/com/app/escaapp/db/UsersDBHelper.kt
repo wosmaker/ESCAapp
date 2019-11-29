@@ -119,6 +119,17 @@ class UsersDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         return users
     }
 
+    fun getAllCustom():ArrayList<UserModel>{
+        val customBy = ArrayList<UserModel>()
+
+        getAllUser().forEach {
+            if(it.byUser){
+                customBy.add(it)
+            }
+        }
+        return customBy
+    }
+
     fun saveHistory(item : savehistoryModel):Boolean{
         val values = ContentValues()
         values.put(des_phone,item.desPhone)
