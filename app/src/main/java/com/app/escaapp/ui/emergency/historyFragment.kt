@@ -9,13 +9,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.app.escaapp.R
 import com.app.escaapp.ui.manage.UserAdapter
 import com.example.management.UsersDBHelper
+import kotlinx.android.synthetic.main.fragment_call_history.*
 import kotlinx.android.synthetic.main.fragment_call_history.view.*
 import kotlinx.android.synthetic.main.navbar_botton.view.*
 import kotlinx.android.synthetic.main.popup_deleteall.view.*
+import kotlinx.coroutines.newFixedThreadPoolContext
 
 class historyFragment :Fragment(){
     lateinit var db: UsersDBHelper
@@ -47,6 +51,7 @@ class historyFragment :Fragment(){
                 adapter = adaptor
             }
 
+
             nav_emergency.setOnClickListener {
                 view.findNavController().popBackStack()
             }
@@ -73,6 +78,16 @@ class historyFragment :Fragment(){
             }
 
         }
+
+        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                adaptor.notifyItemRemoved(viewHolder.adapterPosition)
+                adaptor.notifyDataSetChanged()
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(view.dynamic_historyCall)
 
     }
 

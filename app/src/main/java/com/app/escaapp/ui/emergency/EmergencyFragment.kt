@@ -63,8 +63,7 @@ class EmergencyFragment : Fragment() {
                 view.findNavController().navigate(R.id.emergency_callList)
             }
 
-        }
-
+    }
     }
 
 
