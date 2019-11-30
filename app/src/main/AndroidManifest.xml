@@ -48,7 +48,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
+        <service
+            android:name=".ui.location.FetchAddressIntentService"
+            android:exported="false"/>
         <activity
             android:name=".ui.location.LocationFragment"
             android:label="@string/title_activity_maps" />
