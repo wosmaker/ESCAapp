@@ -1,26 +1,86 @@
 package com.app.escaapp
 
 import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
+import android.net.Uri
+import android.os.Bundle
+import android.os.IBinder
+
+import android.provider.Settings
+import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.app.escaapp.ui.location.LocationUpdatesService
+import com.google.android.material.snackbar.Snackbar
+import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.content.IntentFilter
+import android.content.ServiceConnection
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import com.app.escaapp.ui.location.Utils
+import androidx.preference.PreferenceManager
 import com.example.management.UserModel
 import com.example.management.UsersDBHelper
+
 import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
+    private val TAG = MainActivity::class.java.simpleName
+
+    // Used in checking for runtime permissions.
+    private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+
+    // The BroadcastReceiver used to listen from broadcasts from the service.
+    private lateinit var myReceiver: MyReceiver
+
+    // A reference to the service used to get location updates.
+    private var mService: LocationUpdatesService? = null
+
+    // Tracks the bound state of the service.
+    private var mBound = false
+
+    // UI elements.
+    private var mRequestLocationUpdatesButton: Button? = null
+    private var mRemoveLocationUpdatesButton: Button? = null
+
+    // Monitors the state of the connection to the service.
+    private val mServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val binder = service as LocationUpdatesService.LocalBinder
+            mService = binder.getService()
+            mBound = true
+            mService?.requestLocationUpdates()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            mService = null
+            mBound = false
+        }
+    }
 
     val LocationPermissionRequestCode = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.fragment_emergency)
+        bindService( Intent(this, LocationUpdatesService::class.java), mServiceConnection,
+                Context.BIND_AUTO_CREATE)
+        // Check that the user hasn't revoked permissions by going to Settings.
+
+        if (Utils.requestingLocationUpdates(this)) {
+            if (!checkPermissions()) {
+                requestPermissions()
+            }
+        }
+        myReceiver = MyReceiver()
         val spName = "App_config"
         val sp:SharedPreferences = getSharedPreferences(spName, Context.MODE_PRIVATE)
         val editor:SharedPreferences.Editor = sp.edit()
@@ -43,8 +103,142 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MainAppActivity::class.java)
             startActivity(intent)
         }
+
     }
 
+    override fun onStart() {
+        super.onStart()
+
+//        PreferenceManager.getDefaultSharedPreferences(this)
+//                .registerOnSharedPreferenceChangeListener(this)
+
+            if (!checkPermissions()) {
+                requestPermissions()
+            } else {
+                mService?.requestLocationUpdates()
+            }
+        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
+                IntentFilter(LocationUpdatesService.ACTION_BROADCAST))
+       // mRemoveLocationUpdatesButton.setOnClickListener(View.OnClickListener { mService.removeLocationUpdates() })
+        // Restore the state of the buttons when the activity (re)launches.
+        //setButtonsState(Utils.requestingLocationUpdates(this))
+        // Bind to the service. If the service is in foreground mode, this signals to the service
+// that since this activity is in the foreground, the service can exit foreground mode.
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
+                IntentFilter(LocationUpdatesService.ACTION_BROADCAST))
+    }
+
+//    override fun onPause() {
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(myReceiver)
+//        super.onPause()
+//    }
+
+    override fun onStop() {
+        if (mBound) { // Unbind from the service. This signals to the service that this activity is no longer
+// in the foreground, and the service can respond by promoting itself to a foreground
+// service.
+            unbindService(mServiceConnection)
+            mBound = false
+        }
+//        PreferenceManager.getDefaultSharedPreferences(this)
+//                .unregisterOnSharedPreferenceChangeListener(this)
+        super.onStop()
+    }
+
+    /**
+     * Returns the current state of the permissions needed.
+     */
+    private fun checkPermissions(): Boolean {
+        return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
+    private fun requestPermissions() {
+        val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+        // Provide an additional rationale to the user. This would happen if the user denied the
+// request previously, but didn't check the "Don't ask again" checkbox.
+        if (shouldProvideRationale) {
+            Log.i(TAG, "Displaying permission rationale to provide additional context.")
+            Snackbar.make(
+                    findViewById(R.id.master),
+                    R.string.permission_rationale,
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.ok) {
+                        // Request permission
+                        ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                                REQUEST_PERMISSIONS_REQUEST_CODE)
+                    }
+                    .show()
+        } else {
+            Log.i(TAG, "Requesting permission")
+            // Request permission. It's possible this can be auto answered if device policy
+// sets the permission in a given state or the user denied the permission
+// previously and checked "Never ask again".
+            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_PERMISSIONS_REQUEST_CODE)
+        }
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
+                                            grantResults: IntArray) {
+        Log.i(TAG, "onRequestPermissionResult")
+        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.size <= 0) { // If user interaction was interrupted, the permission request is cancelled and you
+// receive empty arrays.
+                Log.i(TAG, "User interaction was cancelled.")
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission was granted.
+                mService!!.requestLocationUpdates()
+            } else { // Permission denied.
+               // setButtonsState(false)
+                Snackbar.make(
+                        findViewById(R.id.master),
+                        R.string.permission_denied_explanation,
+                        Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.settings) {
+                            // Build intent that displays the App settings screen.
+                            val intent = Intent()
+                            intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            val uri = Uri.fromParts("package",
+                                    BuildConfig.APPLICATION_ID, null)
+                            intent.data = uri
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                        }
+                        .show()
+            }
+        }
+    }
+
+    /**
+     * Receiver for broadcasts sent by [LocationUpdatesService].
+     */
+    private class MyReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val location = intent?.getParcelableExtra<Location>(LocationUpdatesService.EXTRA_LOCATION)
+
+            if (location != null) {
+                Toast.makeText(context, Utils.getLocationText(location),
+                        Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+//    fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, s: String) { // Update the buttons state depending on whether location updates are being requested.
+//        if (s == Utils.KEY_REQUESTING_LOCATION_UPDATES) {
+//            setButtonsState(sharedPreferences.getBoolean(Utils.KEY_REQUESTING_LOCATION_UPDATES,
+//                    false))
+//        }
+//    }
+//
     fun initital(): ArrayList<UserModel> {
         val defaultCall = ArrayList<UserModel>()
         defaultCall.add(UserModel(0,"เหตุด่วน เหตุร้าย (เบอร์ฉุกเฉินแห่งชาติ)","911","",false))
