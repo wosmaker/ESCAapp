@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.popup_deleteall.view.*
 class callListFragment : Fragment() {
     lateinit var db: UsersDBHelper
     lateinit var sp: SharedPreferences
+    lateinit var sp_location : SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,13 +39,19 @@ class callListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         db = UsersDBHelper(requireContext())
+        val spName = "App_config"
+        sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
+
+        val spLocation = "location"
+        sp_location = requireActivity().getSharedPreferences(spLocation, Context.MODE_PRIVATE)
+
+
         return inflater.inflate(R.layout.fragment_call_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         init(view)
-        val spName = "App_config"
-        sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
+
 
         view.run {
             dynamic_call_list.adapter =
@@ -97,7 +104,14 @@ class callListFragment : Fragment() {
     }
 
     fun smsTo(phoneNumber : String){
-        val text = "Test send sms  message... from wos phone $phoneNumber"
+        val latitude = sp_location.getFloat("latitude",0.0f)
+        val longitude = sp_location.getFloat("longitude",0.0f)
+        val place = sp_location.getString("location","dont't know")
+
+        val text = "Emgergency : 'test app' ,\n" +
+                "latitude   : $latitude ,\n" +
+                "longitude  : $longitude "
+
         SmsManager.getDefault().sendTextMessage(phoneNumber,null,text,null,null)
     }
 

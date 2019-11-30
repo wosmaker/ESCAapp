@@ -30,18 +30,24 @@ class EmergencyFragment : Fragment() {
     lateinit var db: UsersDBHelper
     lateinit var sp: SharedPreferences
     lateinit var sp2: SharedPreferences
+    lateinit var sp_location : SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         db = UsersDBHelper(requireContext())
+        val spName = "App_config"
+        sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
+        val spLocation = "location"
+        sp_location = requireActivity().getSharedPreferences(spLocation, Context.MODE_PRIVATE)
+
         return inflater.inflate(R.layout.fragment_emergency, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         NavBar().setGo(2,view)
-        val spName = "App_config"
-        sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
+
 
         if (sp.getBoolean("FirstRun", true)) {
             view.findNavController().navigate(R.id.emergency_firstrun)
@@ -98,15 +104,30 @@ class EmergencyFragment : Fragment() {
     fun smsTo2(phoneNumber: String) {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("smsto: $phoneNumber")
-        intent.putExtra("sms_body", "Here goes your message... from wos")
+        val latitude = sp_location.getFloat("latitude",0.0f)
+        val longitude = sp_location.getFloat("longitude",0.0f)
+        val place = sp_location.getString("location","dont't know")
+        val text = "{ " +
+                "Emgergency : 'test app' ,\n" +
+                "latitude   : $latitude ,\n" +
+                "longitude  : $longitude ,\n" +
+                "location   : $place\n ," +
+                "}"
+
+        intent.putExtra("sms_body", text)
         startActivity(intent)
     }
 
     fun smsTo(phoneNumber : String){
-        val text = "Test send sms  message... from wos phone $phoneNumber"
+        val latitude = sp_location.getFloat("latitude",0.0f)
+        val longitude = sp_location.getFloat("longitude",0.0f)
+        val place = sp_location.getString("location","dont't know")
+        val text = "Emgergency : 'test app' ,\n" +
+                "latitude   : $latitude ,\n" +
+                "longitude  : $longitude"
+
         SmsManager.getDefault().sendTextMessage(phoneNumber,null,text,null,null)
     }
-
     fun isPermissionCall():Boolean {
         if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
             return true
