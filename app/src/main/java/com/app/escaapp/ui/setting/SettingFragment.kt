@@ -36,7 +36,37 @@ class SettingFragment : Fragment() {
     fun setting_listen(view:View , sp:SharedPreferences){
         val editor = sp.edit()
         view.run{
-            sw_gpsTrack.setOnCheckedChangeListener { _, isChecked ->  editor.putBoolean("gpsTrack",isChecked).commit()}
+            sw_gpsTrack.setOnCheckedChangeListener { _, isChecked ->
+                view.run{
+                    if (!isChecked){
+                        sw_gpsServer.run{
+                            isClickable = false
+                            this.isChecked = false
+                            editor.putBoolean("gpsServer",this.isChecked).commit()
+                        }
+
+                        sw_gpsSMS.run {
+                            isClickable = false
+                            this.isChecked = false
+                            editor.putBoolean("gpsSMS",this.isChecked).commit()
+                        }
+                    }
+                    else{
+                        sw_gpsServer.run{
+                            isClickable = true
+                            this.isChecked = true
+                            editor.putBoolean("gpsServer",this.isChecked).commit()
+                        }
+
+                        sw_gpsSMS.run {
+                            isClickable = true
+                            this.isChecked = true
+                            editor.putBoolean("gpsSMS",this.isChecked).commit()
+                        }
+                    }
+                }
+
+                editor.putBoolean("gpsTrack",isChecked).commit()}
             sw_gpsServer.setOnCheckedChangeListener{_,isChecked -> editor.putBoolean("gpsServer",isChecked).commit()}
             sw_gpsSMS.setOnCheckedChangeListener{_,isChecked -> editor.putBoolean("gpsSMS",isChecked).commit()}
 
@@ -48,6 +78,8 @@ class SettingFragment : Fragment() {
             sw_startUpOnBoot.setOnCheckedChangeListener{_,isChecked -> editor.putBoolean("startUpOnBoot",isChecked).commit()}
             sw_runBackground.setOnCheckedChangeListener{_,isChecked -> editor.putBoolean("runBackground",isChecked).commit()}
         }
+
+
     }
 
     fun setting_begin(view:View, sp:SharedPreferences){
