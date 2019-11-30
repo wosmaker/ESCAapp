@@ -1,35 +1,28 @@
 package com.app.escaapp
 
 import android.Manifest
+import android.content.*
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
-
+import android.os.ResultReceiver
 import android.provider.Settings
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.app.escaapp.ui.location.FetchAddressIntentService
 import com.app.escaapp.ui.location.LocationUpdatesService
-import com.google.android.material.snackbar.Snackbar
-import android.content.BroadcastReceiver
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.content.ServiceConnection
-import android.content.SharedPreferences
 import com.app.escaapp.ui.location.Utils
-import androidx.preference.PreferenceManager
 import com.example.management.UserModel
 import com.example.management.UsersDBHelper
-
-import java.lang.Exception
+import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,13 +37,15 @@ class MainActivity : AppCompatActivity() {
     // A reference to the service used to get location updates.
     private var mService: LocationUpdatesService? = null
 
+    private var lastLocation: Location? = null
+    private lateinit var resultReceiver: AddressResultReceiver
     // Tracks the bound state of the service.
     private var mBound = false
-
+    private var first = true
     // UI elements.
     private var mRequestLocationUpdatesButton: Button? = null
     private var mRemoveLocationUpdatesButton: Button? = null
-
+    private var fetchFinish = true
     // Monitors the state of the connection to the service.
     private val mServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -69,9 +64,8 @@ class MainActivity : AppCompatActivity() {
     val LocationPermissionRequestCode = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.fragment_emergency)
-        bindService( Intent(this, LocationUpdatesService::class.java), mServiceConnection,
+        setContentView(R.layout.activity_main)
+        bindService(Intent(this, LocationUpdatesService::class.java), mServiceConnection,
                 Context.BIND_AUTO_CREATE)
         // Check that the user hasn't revoked permissions by going to Settings.
 
@@ -81,25 +75,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
         myReceiver = MyReceiver()
+        resultReceiver = AddressResultReceiver(Handler())
         val spName = "App_config"
-        val sp:SharedPreferences = getSharedPreferences(spName, Context.MODE_PRIVATE)
-        val editor:SharedPreferences.Editor = sp.edit()
+        val sp: SharedPreferences = getSharedPreferences(spName, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sp.edit()
 
 
-        if (sp.getBoolean("FirstRun",true)){
-            editor.putBoolean("FirstRun",false)
+        if (sp.getBoolean("FirstRun", true)) {
+            editor.putBoolean("FirstRun", false)
             editor.commit()
 
             try {
                 val users = initital()
                 val db = UsersDBHelper(this)
                 db.addAllUser(users)
-            }catch (e:Exception){  Toast.makeText(this,"Error $e", Toast.LENGTH_LONG).show() }
+            } catch (e: Exception) {
+                Toast.makeText(this, "Error $e", Toast.LENGTH_LONG).show()
+            }
 
             val intent = Intent(this, FirstTime::class.java)
             startActivity(intent)
-        }
-        else{
+        } else {
             val intent = Intent(this, MainAppActivity::class.java)
             startActivity(intent)
         }
@@ -112,14 +108,14 @@ class MainActivity : AppCompatActivity() {
 //        PreferenceManager.getDefaultSharedPreferences(this)
 //                .registerOnSharedPreferenceChangeListener(this)
 
-            if (!checkPermissions()) {
-                requestPermissions()
-            } else {
-                mService?.requestLocationUpdates()
-            }
+        if (!checkPermissions()) {
+            requestPermissions()
+        } else {
+            mService?.requestLocationUpdates()
+        }
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
                 IntentFilter(LocationUpdatesService.ACTION_BROADCAST))
-       // mRemoveLocationUpdatesButton.setOnClickListener(View.OnClickListener { mService.removeLocationUpdates() })
+        // mRemoveLocationUpdatesButton.setOnClickListener(View.OnClickListener { mService.removeLocationUpdates() })
         // Restore the state of the buttons when the activity (re)launches.
         //setButtonsState(Utils.requestingLocationUpdates(this))
         // Bind to the service. If the service is in foreground mode, this signals to the service
@@ -134,7 +130,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 //    override fun onPause() {
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(myReceiver)
+//
+//       if(!first) LocalBroadcastManager.getInstance(this).unregisterReceiver(myReceiver)
+//        first = false
 //        super.onPause()
 //    }
 
@@ -145,6 +143,7 @@ class MainActivity : AppCompatActivity() {
             unbindService(mServiceConnection)
             mBound = false
         }
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(myReceiver)
 //        PreferenceManager.getDefaultSharedPreferences(this)
 //                .unregisterOnSharedPreferenceChangeListener(this)
         super.onStop()
@@ -198,7 +197,7 @@ class MainActivity : AppCompatActivity() {
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { // Permission was granted.
                 mService!!.requestLocationUpdates()
             } else { // Permission denied.
-               // setButtonsState(false)
+                // setButtonsState(false)
                 Snackbar.make(
                         findViewById(R.id.master),
                         R.string.permission_denied_explanation,
@@ -221,18 +220,62 @@ class MainActivity : AppCompatActivity() {
     /**
      * Receiver for broadcasts sent by [LocationUpdatesService].
      */
-    private class MyReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val location = intent?.getParcelableExtra<Location>(LocationUpdatesService.EXTRA_LOCATION)
+    private fun fetchAddress(location: Location) {
 
-            if (location != null) {
-                Toast.makeText(context, Utils.getLocationText(location),
-                        Toast.LENGTH_SHORT).show()
+
+        if (!Geocoder.isPresent()) {
+            Toast.makeText(this@MainActivity,
+                    "no geoorder",
+                    Toast.LENGTH_LONG).show()
+            return
+        }
+        // Start service  to reflect new location
+        startIntentService(location)
+    }
+
+    inner class MyReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            var location = intent?.getParcelableExtra<Location>(LocationUpdatesService.EXTRA_LOCATION)
+
+            if (location != null&&fetchFinish) {
+                fetchFinish = false
+                this@MainActivity.fetchAddress(location)
             }
         }
     }
 
-//    fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, s: String) { // Update the buttons state depending on whether location updates are being requested.
+    private fun startIntentService(location : Location) {
+
+        val intent = Intent(this, FetchAddressIntentService::class.java).apply {
+            putExtra(FetchAddressIntentService.Constants.RECEIVER, resultReceiver)
+            putExtra(FetchAddressIntentService.Constants.LOCATION_DATA_EXTRA, location)
+        }
+        startService(intent)
+    }
+
+    internal inner class AddressResultReceiver(handler: Handler) : ResultReceiver(handler) {
+
+        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+
+            // Display the address string
+            // or an error message sent from the intent service.
+            var addressOutput = resultData?.getString(FetchAddressIntentService.Constants.RESULT_DATA_KEY)
+                    ?: ""
+
+            // Show a toast message if an address was found.
+            if (resultCode == FetchAddressIntentService.Constants.SUCCESS_RESULT) {
+                Toast.makeText(this@MainActivity, addressOutput,
+                        Toast.LENGTH_SHORT).show()
+            }
+            fetchFinish = true
+
+        }
+
+    }
+
+
+
+    //    fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, s: String) { // Update the buttons state depending on whether location updates are being requested.
 //        if (s == Utils.KEY_REQUESTING_LOCATION_UPDATES) {
 //            setButtonsState(sharedPreferences.getBoolean(Utils.KEY_REQUESTING_LOCATION_UPDATES,
 //                    false))
@@ -241,24 +284,24 @@ class MainActivity : AppCompatActivity() {
 //
     fun initital(): ArrayList<UserModel> {
         val defaultCall = ArrayList<UserModel>()
-        defaultCall.add(UserModel(0,"เหตุด่วน เหตุร้าย (เบอร์ฉุกเฉินแห่งชาติ)","911","",false))
-        defaultCall.add(UserModel(0,"ศูนย์บริการข่าวสารข้อมูลและรับเรื่องร้องเรียน","1599","",false))
-        defaultCall.add(UserModel(0,"ตำรวจท่องเที่ยว","1155","",false))
-        defaultCall.add(UserModel(0,"ตำรวจทางหลวง","1193","",false))
-        defaultCall.add(UserModel(0,"ตำรวจกองปราบ","1195","",false))
-        defaultCall.add(UserModel(0,"ตำรวจจราจร ศูนย์ควบคุมและสั่งการจราจร","1197","",false))
-        defaultCall.add(UserModel(0,"โรงพยาบาลตำรวจแ","1691","",false))
-        defaultCall.add(UserModel(0,"ตำรวจตระเวนชายแดน","1190","",false))
-        defaultCall.add(UserModel(0,"ตำรวจตรวจคนเข้าเมือง","1178","",false))
-        defaultCall.add(UserModel(0,"ตำรวจน้ำ อุบัติเหตุทางน้ำ","1196","",false))
-        defaultCall.add(UserModel(0,"ตำรวจรถไฟ","1690","",false))
+        defaultCall.add(UserModel(0, "เหตุด่วน เหตุร้าย (เบอร์ฉุกเฉินแห่งชาติ)", "911", "", false))
+        defaultCall.add(UserModel(0, "ศูนย์บริการข่าวสารข้อมูลและรับเรื่องร้องเรียน", "1599", "", false))
+        defaultCall.add(UserModel(0, "ตำรวจท่องเที่ยว", "1155", "", false))
+        defaultCall.add(UserModel(0, "ตำรวจทางหลวง", "1193", "", false))
+        defaultCall.add(UserModel(0, "ตำรวจกองปราบ", "1195", "", false))
+        defaultCall.add(UserModel(0, "ตำรวจจราจร ศูนย์ควบคุมและสั่งการจราจร", "1197", "", false))
+        defaultCall.add(UserModel(0, "โรงพยาบาลตำรวจแ", "1691", "", false))
+        defaultCall.add(UserModel(0, "ตำรวจตระเวนชายแดน", "1190", "", false))
+        defaultCall.add(UserModel(0, "ตำรวจตรวจคนเข้าเมือง", "1178", "", false))
+        defaultCall.add(UserModel(0, "ตำรวจน้ำ อุบัติเหตุทางน้ำ", "1196", "", false))
+        defaultCall.add(UserModel(0, "ตำรวจรถไฟ", "1690", "", false))
 
-        defaultCall.add(UserModel(0,"ศูนย์เตือนภัยพิบัติแห่งชาติ","192","",false))
-        defaultCall.add(UserModel(0,"แจ้งอัคคีภัย สัตว์เข้าบ้าน สำนักป้องกันและบรรเทาสาธารณภัย","1690","",false))
-        defaultCall.add(UserModel(0,"หน่วยแพทย์กู้ชีวิต","1554","",false))
-        defaultCall.add(UserModel(0,"การท่องเที่ยวแห่งประเทศไทย","1672","",false))
-        defaultCall.add(UserModel(0,"สถาบันการแพทย์ฉุกเฉินแห่งชาติ","1669","",false))
-        defaultCall.add(UserModel(0,"ศูนย์เตือนภัยพิบัติแห่งชาติ","1860","",false))
+        defaultCall.add(UserModel(0, "ศูนย์เตือนภัยพิบัติแห่งชาติ", "192", "", false))
+        defaultCall.add(UserModel(0, "แจ้งอัคคีภัย สัตว์เข้าบ้าน สำนักป้องกันและบรรเทาสาธารณภัย", "1690", "", false))
+        defaultCall.add(UserModel(0, "หน่วยแพทย์กู้ชีวิต", "1554", "", false))
+        defaultCall.add(UserModel(0, "การท่องเที่ยวแห่งประเทศไทย", "1672", "", false))
+        defaultCall.add(UserModel(0, "สถาบันการแพทย์ฉุกเฉินแห่งชาติ", "1669", "", false))
+        defaultCall.add(UserModel(0, "ศูนย์เตือนภัยพิบัติแห่งชาติ", "1860", "", false))
 
         return defaultCall
     }
