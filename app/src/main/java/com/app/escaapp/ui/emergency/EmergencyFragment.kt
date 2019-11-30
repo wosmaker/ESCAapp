@@ -29,7 +29,7 @@ class EmergencyFragment : Fragment() {
 
     lateinit var db: UsersDBHelper
     lateinit var sp: SharedPreferences
-
+    lateinit var sp2: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +46,9 @@ class EmergencyFragment : Fragment() {
         if (sp.getBoolean("FirstRun", true)) {
             view.findNavController().navigate(R.id.emergency_firstrun)
         }
+
+        val spName2 = "location"
+        sp2 = requireActivity().getSharedPreferences(spName2, Context.MODE_PRIVATE)
 
         view.run{
             btn_police.setOnClickListener {
@@ -68,6 +71,7 @@ class EmergencyFragment : Fragment() {
                 view.findNavController().navigate(R.id.emergency_callList)
             }
         }
+
     }
 
 
