@@ -112,11 +112,20 @@ class callListFragment : Fragment() {
                 "latitude   : $latitude ,\n" +
                 "longitude  : $longitude "
 
-        SmsManager.getDefault().sendTextMessage(phoneNumber,null,text,null,null)
+        if (isPermissionSms()){
+            SmsManager.getDefault().sendTextMessage(phoneNumber,null,text,null,null)
+        }
     }
-
     fun isPermissionCall():Boolean {
         if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
+            return true
+        }
+        Toast.makeText(activity,"Permission denied" , Toast.LENGTH_LONG).show()
+        return false
+    }
+
+    fun isPermissionSms():Boolean {
+        if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
             return true
         }
         Toast.makeText(activity,"Permission denied" , Toast.LENGTH_LONG).show()

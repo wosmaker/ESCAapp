@@ -21,6 +21,8 @@ import com.example.management.UsersDBHelper
 import com.example.management.savehistoryModel
 import kotlinx.android.synthetic.main.fragment_emergency.view.*
 import kotlinx.android.synthetic.main.navbar_botton.view.*
+import java.util.*
+import kotlin.concurrent.schedule
 
 /**
  * A simple [Fragment] subclass.
@@ -29,7 +31,6 @@ class EmergencyFragment : Fragment() {
 
     lateinit var db: UsersDBHelper
     lateinit var sp: SharedPreferences
-    lateinit var sp2: SharedPreferences
     lateinit var sp_location : SharedPreferences
 
     override fun onCreateView(
@@ -53,10 +54,14 @@ class EmergencyFragment : Fragment() {
             view.findNavController().navigate(R.id.emergency_firstrun)
         }
 
-        val spName2 = "location"
-        sp2 = requireActivity().getSharedPreferences(spName2, Context.MODE_PRIVATE)
+
 
         view.run{
+            location.run {
+                text = sp_location.getString("location", "Not found")
+                invalidate()
+            }
+
             btn_police.setOnClickListener {
                 callTo("0888590724")
             }
@@ -79,7 +84,6 @@ class EmergencyFragment : Fragment() {
         }
 
     }
-
 
     fun callTo(phoneNumber: String){
         val intent = Intent(Intent.ACTION_CALL)
@@ -126,10 +130,20 @@ class EmergencyFragment : Fragment() {
                 "latitude   : $latitude ,\n" +
                 "longitude  : $longitude"
 
-        SmsManager.getDefault().sendTextMessage(phoneNumber,null,text,null,null)
+        if (isPermissionSms()){
+            SmsManager.getDefault().sendTextMessage(phoneNumber,null,text,null,null)
+        }
     }
     fun isPermissionCall():Boolean {
         if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
+            return true
+        }
+        Toast.makeText(activity,"Permission denied" , Toast.LENGTH_LONG).show()
+        return false
+    }
+
+    fun isPermissionSms():Boolean {
+        if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
             return true
         }
         Toast.makeText(activity,"Permission denied" , Toast.LENGTH_LONG).show()

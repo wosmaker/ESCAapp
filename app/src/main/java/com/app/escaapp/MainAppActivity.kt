@@ -244,8 +244,7 @@ class MainAppActivity : AppCompatActivity() {
 
             // Show a toast message if an address was found.
             if (resultCode == FetchAddressIntentService.Constants.SUCCESS_RESULT) {
-                Toast.makeText(this@MainAppActivity, addressOutput,
-                        Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainAppActivity, addressOutput, Toast.LENGTH_SHORT).show()
                 editor2.putFloat("latitude",location.latitude.toFloat()).commit()
                 editor2.putFloat("longitude",location.longitude.toFloat()).commit()
                 editor2.putString("location",addressOutput).commit()
