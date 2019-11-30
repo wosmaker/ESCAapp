@@ -1,5 +1,6 @@
 package com.app.escaapp.ui.location
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -28,12 +29,12 @@ import java.lang.Exception
 
 class Add_Location : Fragment() {
 
-    lateinit var db : DB_saveLocattion
+    lateinit var db: DB_saveLocattion
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         //initial
         db = DB_saveLocattion(requireContext())
@@ -50,32 +51,32 @@ class Add_Location : Fragment() {
 
     }
 
-    private fun addContactData(view :View) {
-        form{
+    private fun addContactData(view: View) {
+        var spName = "location"
+        var sp = activity!!.getSharedPreferences(spName, Context.MODE_PRIVATE)
+        form {
 
-            input(view.location_name){
+            input(view.location_name) {
                 isNotEmpty().description("Please Input Location Name ")
                 length().atLeast(2)
                 length().atMost(50)
-                }
+            }
 
-
-
-            submitWith(view.btn_Cancel){
+            submitWith(view.btn_Cancel) {
 
                 view.findNavController().popBackStack()
             }
 
 
-            submitWith(view.btn_Add){
-                try{
-                    lateinit var user : LocationModel
+            submitWith(view.btn_Add) {
+                try {
+                    lateinit var user: LocationModel
                     val id = 0
                     val location_name = view.location_name.text.toString()
-                    val result = db.addLocation(LocationModel(id,location_name,0.00,0.00))
+                    val result = db.addLocation(LocationModel(id, location_name, sp.getFloat("latitude", 0.0f).toDouble(), sp.getFloat("longitude", 0.0f).toDouble(), sp.getString("location", "")!!))
                     view.findNavController().popBackStack()
                     //Toast.makeText(activity,"Added user :: $result",Toast.LENGTH_LONG).show()
-                }catch (e : Exception){
+                } catch (e: Exception) {
                     //Toast.makeText(activity,"Error :: $e",Toast.LENGTH_LONG).show()
                 }
             }

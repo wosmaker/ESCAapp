@@ -9,7 +9,7 @@ import com.example.management.UserModel
 import com.example.management.UsersDBHelper
 
 
-data class LocationModel(val id:Int ,val name:String, val latitude:Double, val longitude:Double)
+data class LocationModel(val id:Int ,val name:String, val latitude:Double, val longitude:Double, val location : String)
 
 class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_NAME,null,DATABASE_VESION){
     companion object {
@@ -20,8 +20,8 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
         const val name = "location_name"
         const val latitude = "latitude_value"
         const val longitude = "longitude_value"
-
-        const val SQL_CREATE = "create table $table_name ($id integer primary key autoincrement not null,$name varchar,$latitude real, $longitude real)"
+        const val location = "location_value"
+        const val SQL_CREATE = "create table $table_name ($id integer primary key autoincrement not null,$name varchar,$latitude real, $longitude real,$location varchar)"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -38,7 +38,7 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
         values.put(name,model.name)
         values.put(latitude,model.latitude)
         values.put(longitude,model.longitude)
-
+        values.put(location,model.location)
         val success = writableDatabase.insert(table_name,null,values)
         return (Integer.parseInt("$success") != -1)
     }
@@ -60,14 +60,14 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
                 val _name = cursor.getString((cursor.getColumnIndex(name)))
                 val _latitude = cursor.getDouble(cursor.getColumnIndex(latitude))
                 val _longitude = cursor.getDouble(cursor.getColumnIndex(longitude))
-
-                locations.add(LocationModel(_id, _name, _latitude, _longitude))
+                val _location = cursor.getString((cursor.getColumnIndex(location)))
+                locations.add(LocationModel(_id, _name, _latitude, _longitude,_location))
             }while(cursor.moveToNext())
         }
         return locations
     }
 
-    fun updateLocation( model: LocationModel, updtnm : Boolean, updtlat : Boolean, updtlot : Boolean):Boolean{
+    /*fun updateLocation( model: LocationModel, updtnm : Boolean, updtlat : Boolean, updtlot : Boolean):Boolean{
         val values = ContentValues()
         val select = "$id = ?"
         if(updtnm) values.put(name,model.name)
@@ -77,11 +77,11 @@ class DB_saveLocattion(context : Context) : SQLiteOpenHelper(context, DATABASE_N
         val success = writableDatabase.update(table_name,values,select,selectArgs)
         return (Integer.parseInt("$success") != -1)
 
-    }
+    }*/
 
-    fun deleteTable(){
-        writableDatabase.execSQL("delete from $table_name")
-    }
+//    fun deleteTable(){
+//        writableDatabase.execSQL("delete from $table_name")
+//    }
 
     fun deleteAllLocation(location:ArrayList<LocationModel>){
         location.forEach {

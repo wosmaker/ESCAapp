@@ -64,8 +64,7 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
     }
 
 
-
-    lateinit var locationAdapter : LocationAdapter
+    lateinit var locationAdapter: LocationAdapter
 
     private var edit_mode = false
     private val buffer = ArrayList<LocationModel>()
@@ -81,8 +80,8 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val spName = "Location"
-        val sp = activity!!.getSharedPreferences(spName, Context.MODE_PRIVATE)
+       // val spName = "Location"
+        //val sp = activity!!.getSharedPreferences(spName, Context.MODE_PRIVATE)
         //parentLinearLayout = view.findViewById<View>(R.id.parent_linear_layout) as LinearLayout
         //view.findViewById<View>(R.id.delete_button).visibility = View.GONE
         db = DB_saveLocattion(context!!)
@@ -98,7 +97,7 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         // mSettingsClient = LocationServices.getSettingsClient(activity!!)
 
         NavBar().setGo(1, view)
-       // viewInit(view)
+        // viewInit(view)
         //btnListener(view)
 
         // Kick off the process of building the LocationCallback, LocationRequest, and
@@ -123,9 +122,9 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         //getLocation(view)
     }
 
-    private fun initRecycleView(view:View): LocationAdapter {
+    private fun initRecycleView(view: View): LocationAdapter {
         //Toast.makeText(activity," user :: ${db.getAllCustom()}", Toast.LENGTH_LONG).show()
-        val Adapter_ =  LocationAdapter(requireActivity())
+        val Adapter_ = LocationAdapter(requireActivity())
         Adapter_.insertItem(db.getLocationAll())
         view.userListView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -134,8 +133,8 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         return Adapter_
     }
 
-    private fun disChange(view : View){
-        locationAdapter.run{
+    private fun disChange(view: View) {
+        locationAdapter.run {
             this.edit_mode = false
             restoreOldList()
             notifyDataSetChanged()
@@ -145,14 +144,14 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         End_Anime(view)
     }
 
-    private fun discardChange(view :View) {
+    private fun discardChange(view: View) {
         val popView = LayoutInflater.from(requireContext()).inflate(R.layout.discard_change, null)
         val dialog = AlertDialog.Builder(requireContext())
                 .setView(popView)
                 .create()
         dialog.show()
 
-        popView.run{
+        popView.run {
             No.setOnClickListener { dialog.dismiss() }
             Yes.setOnClickListener {
                 disChange(view)
@@ -161,11 +160,11 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         }
     }
 
-    private fun Edit_state(view:View){
+    private fun Edit_state(view: View) {
 
         view.Edit.setOnClickListener {
             Start_Anime(view)
-            locationAdapter.run{
+            locationAdapter.run {
                 edit_mode = true
                 backupOldList()
                 notifyDataSetChanged()
@@ -173,18 +172,18 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
             buffer.clear()
         }
 
-        view.Cancel.setOnClickListener{
+        view.Cancel.setOnClickListener {
             discardChange(view)
         }
 
-        view.Done.setOnClickListener{
+        view.Done.setOnClickListener {
             db.run {
                 deleteAllLocation(locationAdapter.getDelete())
                 addAllLocation(buffer)
             }
 
-            locationAdapter.run{
-                this.edit_mode  = false
+            locationAdapter.run {
+                this.edit_mode = false
                 insertItem(db.getLocationAll())
             }
             End_Anime(view)
@@ -192,19 +191,21 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         }
 
         view.Add.setOnClickListener {
-            val addUserDialog = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_location_addlocation,null)
+            val addUserDialog = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_location_addlocation, null)
             val addBuilder = AlertDialog.Builder(requireContext())
                     .setView(addUserDialog)
                     .create()
 
             addBuilder.show()
-            addContactData(addUserDialog,addBuilder)
+            addContactData(addUserDialog, addBuilder)
         }
     }
 
-    private fun addContactData(view :View, builder: AlertDialog) {
-        form{
-            input(view.location_name){
+    private fun addContactData(view: View, builder: AlertDialog) {
+        var spName = "location"
+        var sp = activity!!.getSharedPreferences(spName, Context.MODE_PRIVATE)
+        form {
+            input(view.location_name) {
                 isNotEmpty().description("Please Input Contact Name ")
                 length().atLeast(2)
                 length().atMost(50)
@@ -212,44 +213,48 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
 
 
             view.btn_Cancel.setOnClickListener {
-                val exitDialog = LayoutInflater.from(requireContext()).inflate(R.layout.pop_cancel_confirm,null)
+                val exitDialog = LayoutInflater.from(requireContext()).inflate(R.layout.pop_cancel_confirm, null)
                 val exitBuild = AlertDialog.Builder(requireContext())
                         .setView(exitDialog)
                         .create()
 
                 exitBuild.show()
 
-                exitDialog.Yes.setOnClickListener{
+                exitDialog.Yes.setOnClickListener {
                     exitBuild.dismiss()
                     builder.dismiss()
                 }
 
-                exitDialog.No.setOnClickListener{
+                exitDialog.No.setOnClickListener {
                     exitBuild.dismiss()
                 }
             }
 
-            submitWith(view.btn_Add){
-                try{
+            submitWith(view.btn_Add) {
+                try {
                     val user = LocationModel(
                             0,
                             view.location_name.text.toString(),
-                            0.00,
-                            0.00)
+                            sp.getFloat("latitude", 0.0f).toDouble(),
+                            sp.getFloat("longitude", 0.0f).toDouble(),
+                            sp.getString("location", "")!!)
                     buffer.add(user)
                     locationAdapter.addItem(user)
-                    Log.d("adapter","buffer check -> $buffer")
+                    Log.d("adapter", "buffer check -> $buffer")
                     builder.dismiss()
-                }catch (e : Exception){error(e) }
+                } catch (e: Exception) {
+                    error(e)
+                }
             }
         }
     }
-    private fun Start_Anime(view:View){
-        val fade = AnimationUtils.loadAnimation(requireContext(), R.anim.fade)
-        val sd = AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down)
-        val sd_add = AnimationUtils.loadAnimation(requireContext(),R.anim.fade_in)
 
-        view.run{
+    private fun Start_Anime(view: View) {
+        val fade = AnimationUtils.loadAnimation(requireContext(), R.anim.fade)
+        val sd = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_down)
+        val sd_add = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
+
+        view.run {
             block.startAnimation(sd)
             block.translationY = 30F
 
@@ -259,8 +264,8 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
 
             Edit.startAnimation(fade)
 
-            Cancel.visibility =  View.VISIBLE
-            Done.visibility =  View.VISIBLE
+            Cancel.visibility = View.VISIBLE
+            Done.visibility = View.VISIBLE
             Add.visibility = View.VISIBLE
 
             Edit.visibility = View.INVISIBLE
@@ -269,11 +274,11 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
 
     }
 
-    private fun End_Anime(view: View){
+    private fun End_Anime(view: View) {
 
         val sd = AnimationUtils.loadAnimation(activity, R.anim.slide_up)
-        val sd_add = AnimationUtils.loadAnimation(activity,R.anim.fade_out)
-        view.run{
+        val sd_add = AnimationUtils.loadAnimation(activity, R.anim.fade_out)
+        view.run {
             block.translationY = 0F
             block.startAnimation(sd)
 
@@ -288,87 +293,87 @@ class LocationFragment : Fragment() /*, OnMapReadyCallback*/ {
         }
     }
 
-   /* private fun btnListener(view: View) {
-        view.findViewById<View>(R.id.edtBtn).setOnClickListener {
-            if (edtBtnEnb) {
-                view!!.findViewById<View>(R.id.add_field_button).visibility = View.VISIBLE
-                //parentLinearLayout!!.getChildAt(0).edit_text.isEnabled = true
-                view.findViewById<View>(R.id.edit_location_first).visibility = View.VISIBLE
-                for (i in 0 until parentLinearLayout!!.childCount) {
-                    parentLinearLayout!!.getChildAt(i).edit_text.isEnabled = true
-                    parentLinearLayout!!.getChildAt(i).delete_button.visibility = View.VISIBLE
-                    parentLinearLayout!!.getChildAt(i).edit_location.visibility = View.VISIBLE
-                }
-                view.findViewById<Button>(R.id.edtBtn).text = "save"
-                edtBtnEnb = false
-            } else {
-                view!!.findViewById<View>(R.id.add_field_button).visibility = View.GONE
-                view.findViewById<View>(R.id.edit_location_first).visibility = View.GONE
-                for (i in 0 until parentLinearLayout!!.childCount) {
-                    // var temp1 = db.getLocationAll()
-                    db.updateLocation(LocationModel(parentLinearLayout!!.getChildAt(i).id, parentLinearLayout!!.getChildAt(i).edit_text.text.toString(), 0.01, 0.01), true, false, false)
-                    parentLinearLayout!!.getChildAt(i).edit_text.isEnabled = false
-                    parentLinearLayout!!.getChildAt(i).delete_button.visibility = View.GONE
-                    parentLinearLayout!!.getChildAt(i).edit_location.visibility = View.GONE
-                }
-                view.findViewById<Button>(R.id.edtBtn).text = "edit"
-                edtBtnEnb = true
-            }
+    /* private fun btnListener(view: View) {
+         view.findViewById<View>(R.id.edtBtn).setOnClickListener {
+             if (edtBtnEnb) {
+                 view!!.findViewById<View>(R.id.add_field_button).visibility = View.VISIBLE
+                 //parentLinearLayout!!.getChildAt(0).edit_text.isEnabled = true
+                 view.findViewById<View>(R.id.edit_location_first).visibility = View.VISIBLE
+                 for (i in 0 until parentLinearLayout!!.childCount) {
+                     parentLinearLayout!!.getChildAt(i).edit_text.isEnabled = true
+                     parentLinearLayout!!.getChildAt(i).delete_button.visibility = View.VISIBLE
+                     parentLinearLayout!!.getChildAt(i).edit_location.visibility = View.VISIBLE
+                 }
+                 view.findViewById<Button>(R.id.edtBtn).text = "save"
+                 edtBtnEnb = false
+             } else {
+                 view!!.findViewById<View>(R.id.add_field_button).visibility = View.GONE
+                 view.findViewById<View>(R.id.edit_location_first).visibility = View.GONE
+                 for (i in 0 until parentLinearLayout!!.childCount) {
+                     // var temp1 = db.getLocationAll()
+                     db.updateLocation(LocationModel(parentLinearLayout!!.getChildAt(i).id, parentLinearLayout!!.getChildAt(i).edit_text.text.toString(), 0.01, 0.01), true, false, false)
+                     parentLinearLayout!!.getChildAt(i).edit_text.isEnabled = false
+                     parentLinearLayout!!.getChildAt(i).delete_button.visibility = View.GONE
+                     parentLinearLayout!!.getChildAt(i).edit_location.visibility = View.GONE
+                 }
+                 view.findViewById<Button>(R.id.edtBtn).text = "edit"
+                 edtBtnEnb = true
+             }
 
-        }
-        view.findViewById<View>(R.id.add_field_button).setOnClickListener {
-            val inflater =
-                    activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val rowView: View = inflater.inflate(R.layout.field, null)
+         }
+         view.findViewById<View>(R.id.add_field_button).setOnClickListener {
+             val inflater =
+                     activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+             val rowView: View = inflater.inflate(R.layout.field, null)
 
-            //rowView.delete_button.visibility = View.GONE
+             //rowView.delete_button.visibility = View.GONE
 
-            // Add the new row before the add field button.
-            //var x =parentLinearLayout!!.childCount
+             // Add the new row before the add field button.
+             //var x =parentLinearLayout!!.childCount
 
-            db.addLocation(LocationModel(latestID, "", 0.00, 0.00))
-            var xxxx = latestID
-            rowView.id = latestID++
-            rowView.delete_button.setOnClickListener {
-                db.deleteLocation(rowView.id.toString())
-                parentLinearLayout!!.removeView(rowView)
-            }
+             db.addLocation(LocationModel(latestID, "", 0.00, 0.00))
+             var xxxx = latestID
+             rowView.id = latestID++
+             rowView.delete_button.setOnClickListener {
+                 db.deleteLocation(rowView.id.toString())
+                 parentLinearLayout!!.removeView(rowView)
+             }
 
-            parentLinearLayout!!.addView(rowView, parentLinearLayout!!.childCount)
-        }
-    }
+             parentLinearLayout!!.addView(rowView, parentLinearLayout!!.childCount)
+         }
+     }
 
-    private fun viewInit(view: View) {
-        view.findViewById<View>(R.id.edit_text_first).isEnabled = false
-        (view.findViewById<View>(R.id.edit_text_first) as EditText).setText("test")
-        view.findViewById<View>(R.id.edit_location_first).visibility = View.GONE
-        view.findViewById<View>(R.id.add_field_button).visibility = View.GONE
-        //db.addLocation(LocationModel(-1,"testgetfromdb",0.00,0.00))
-        //  db.deleteTable()
-        //var i =db.getLocationAll().size
-        for (item in db.getLocationAll()) {
-            val inflater =
-                    activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val rowView: View = inflater.inflate(R.layout.field, null)
+     private fun viewInit(view: View) {
+         view.findViewById<View>(R.id.edit_text_first).isEnabled = false
+         (view.findViewById<View>(R.id.edit_text_first) as EditText).setText("test")
+         view.findViewById<View>(R.id.edit_location_first).visibility = View.GONE
+         view.findViewById<View>(R.id.add_field_button).visibility = View.GONE
+         //db.addLocation(LocationModel(-1,"testgetfromdb",0.00,0.00))
+         //  db.deleteTable()
+         //var i =db.getLocationAll().size
+         for (item in db.getLocationAll()) {
+             val inflater =
+                     activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+             val rowView: View = inflater.inflate(R.layout.field, null)
 
-            //rowView.delete_button.visibility = View.GONE
-            rowView.delete_button.visibility = View.GONE
-            rowView.edit_location.visibility = View.GONE
-            rowView.edit_text.isEnabled = false
-            // Add the new row before the add field button.
-            rowView.edit_text.setText(item.name)
-            rowView.id = item.id
-            latestID = item.id+1
-            rowView.delete_button.setOnClickListener {
-                println(rowView.id.toString())
-                db.deleteLocation(rowView.id.toString())
-                parentLinearLayout!!.removeView(rowView)
-            }
+             //rowView.delete_button.visibility = View.GONE
+             rowView.delete_button.visibility = View.GONE
+             rowView.edit_location.visibility = View.GONE
+             rowView.edit_text.isEnabled = false
+             // Add the new row before the add field button.
+             rowView.edit_text.setText(item.name)
+             rowView.id = item.id
+             latestID = item.id+1
+             rowView.delete_button.setOnClickListener {
+                 println(rowView.id.toString())
+                 db.deleteLocation(rowView.id.toString())
+                 parentLinearLayout!!.removeView(rowView)
+             }
 
-            parentLinearLayout!!.addView(rowView, parentLinearLayout!!.childCount)
-        }
+             parentLinearLayout!!.addView(rowView, parentLinearLayout!!.childCount)
+         }
 
-    }*/
+     }*/
     /* private fun createLocationCallback() {
          mLocationCallback = object : LocationCallback() {
              override fun onLocationResult(locationResult: LocationResult) {
