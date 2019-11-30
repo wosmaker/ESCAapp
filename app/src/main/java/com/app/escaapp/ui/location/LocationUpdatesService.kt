@@ -10,7 +10,7 @@ import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.app.escaapp.MainActivity
+import com.app.escaapp.MainAppActivity
 import com.app.escaapp.R
 import com.google.android.gms.location.*
 
@@ -158,7 +158,7 @@ class LocationUpdatesService : Service() {
         val servicePendingIntent = PendingIntent.getService(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
         val activityPendingIntent = PendingIntent.getActivity(this, 0,
-                Intent(this, MainActivity::class.java), 0)
+                Intent(this, MainAppActivity::class.java), 0)
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
                 .addAction(R.drawable.ic_launch, getString(R.string.launch_activity),
                         activityPendingIntent)

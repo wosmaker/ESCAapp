@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.navbar_botton.*
 
 
 class MainAppActivity : AppCompatActivity() {
-    private val TAG = MainActivity::class.java.simpleName
+    private val TAG = "dddd"
 
     // Used in checking for runtime permissions.
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 34

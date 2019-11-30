@@ -29,6 +29,7 @@ class LocationAdapter(val activity: Activity) : RecyclerView.Adapter<LocationAda
         val location = itemView.location_edtxt2!!
         val deleteButton = itemView.delete_btn!!
         val icon = itemView.iconLocation
+        val bt_view = itemView.bt_view
 
     }
 
@@ -44,28 +45,42 @@ class LocationAdapter(val activity: Activity) : RecyclerView.Adapter<LocationAda
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
         val location = datasource[position]
 
-        holder.locationName.text = location.name
-        holder.location.text = location.location
-        // holder.phone_no.text = location.phone_no
-        if (edit_mode) {
-            holder.deleteButton.visibility = View.VISIBLE
-        } else {
-            holder.deleteButton.visibility = View.INVISIBLE
-        }
-        holder.icon.setOnClickListener{
-            val gmmIntentUri: Uri = Uri.parse("google.navigation:q=${location.latitude},${location.longitude}")
-            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-            mapIntent.setPackage("com.google.android.apps.maps")
-            activity.startActivity(mapIntent)
-        }
-        holder.deleteButton.setOnClickListener {
-            deleteQ.add(location)
-            datasource.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, datasource.size)
+        holder.run{
+            locationName.text = location.name
+            this.location.text = location.location
+            //phone_no.text = location.phone_no
+            if (edit_mode) {
+                deleteButton.visibility = View.VISIBLE
+                bt_view.isEnabled = false
+                icon.isEnabled = false
 
-        }
+            } else {
+                deleteButton.visibility = View.INVISIBLE
+                bt_view.isEnabled = true
+                icon.isEnabled = true
+            }
+            bt_view.setOnClickListener {
+                val gmmIntentUri: Uri = Uri.parse("google.navigation:q=${location.latitude},${location.longitude}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                activity.startActivity(mapIntent)
+            }
 
+            icon.setOnClickListener{
+                val gmmIntentUri: Uri = Uri.parse("google.navigation:q=${location.latitude},${location.longitude}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                activity.startActivity(mapIntent)
+            }
+
+           deleteButton.setOnClickListener {
+                deleteQ.add(location)
+                datasource.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, datasource.size)
+
+            }
+        }
     }
 
     fun insertItem(newList: ArrayList<LocationModel>) {
