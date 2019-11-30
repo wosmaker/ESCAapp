@@ -108,6 +108,9 @@ class MainAppActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        bindService(Intent(this, LocationUpdatesService::class.java), mServiceConnection,
+        Context.BIND_AUTO_CREATE)
+
         LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
                 IntentFilter(LocationUpdatesService.ACTION_BROADCAST))
     }
