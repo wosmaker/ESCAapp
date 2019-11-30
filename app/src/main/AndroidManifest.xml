@@ -51,34 +51,14 @@
         <service
             android:name=".ui.location.FetchAddressIntentService"
             android:exported="false"/>
-        <activity
-            android:name=".MainActivity"
-            android:label="MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".ui.location.LocationFragment"
             android:label="@string/title_activity_maps" />
 
         <activity
-            android:name=".FirstTime"
-            android:label="@string/title_activity_first_time"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".MainAppActivity"
-            android:label="@string/title_activity_main_app"
+            android:label="Esca"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

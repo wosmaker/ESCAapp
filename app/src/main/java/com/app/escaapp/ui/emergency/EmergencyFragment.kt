@@ -42,6 +42,11 @@ class EmergencyFragment : Fragment() {
         NavBar().setGo(2,view)
         val spName = "App_config"
         sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
+
+        if (sp.getBoolean("FirstRun", true)) {
+            view.findNavController().navigate(R.id.emergency_firstrun)
+        }
+
         view.run{
             btn_police.setOnClickListener {
                 callTo("0888590724")
@@ -62,8 +67,7 @@ class EmergencyFragment : Fragment() {
             nav_emergency.setOnClickListener{
                 view.findNavController().navigate(R.id.emergency_callList)
             }
-
-    }
+        }
     }
 
 

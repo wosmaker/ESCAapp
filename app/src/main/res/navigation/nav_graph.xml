@@ -48,6 +48,9 @@
             android:id="@+id/callListFragment"
             android:name="com.app.escaapp.ui.emergency.callListFragment"
             android:label="callListFragment" />
+        <action
+            android:id="@+id/emergency_firstrun"
+            app:destination="@id/firstTime" />
     </navigation>
     <navigation
         android:id="@+id/Profile"
@@ -148,4 +151,13 @@
             android:name="com.app.escaapp.ui.manage.Add_Contact"
             android:label="Add_Contact" />
     </navigation>
+    <fragment
+        android:id="@+id/firstTime"
+        android:name="com.app.escaapp.FirstTime"
+        android:label="activity_first_time"
+        tools:layout="@layout/activity_first_time" >
+        <action
+            android:id="@+id/firstrun_emergency"
+            app:destination="@id/Emergency" />
+    </fragment>
 </navigation>
