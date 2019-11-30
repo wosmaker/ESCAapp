@@ -79,7 +79,8 @@ class historyFragment :Fragment(){
         }
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adaptor.removeAt(viewHolder.adapterPosition)
+                val item = adaptor.removeAt(viewHolder.adapterPosition)
+                db.deleteHistory(item.id)
             }
         }
 

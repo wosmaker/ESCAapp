@@ -28,7 +28,7 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        NavBar().setGo(0, view)
+//        NavBar().setGo(0, view)
         val dialog = popup().notInclude(requireContext())
 
         Timer().schedule(1500) {
