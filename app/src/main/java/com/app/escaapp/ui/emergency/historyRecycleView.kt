@@ -43,4 +43,13 @@ class historyRecycleView(val activity: Activity) : RecyclerView.Adapter<historyR
         notifyDataSetChanged()
     }
 
+    fun getDeleteItem(position: Int):historyModel = datasource[position]
+
+    fun removeAt(position: Int) {
+        datasource.removeAt(position)
+        notifyItemRemoved(position)
+        notifyDataSetChanged()
+    }
+
+
 }

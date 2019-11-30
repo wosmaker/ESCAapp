@@ -31,7 +31,7 @@ class ProfileFragment : Fragment() {
         NavBar().setGo(0, view)
         val dialog = popup().notInclude(requireContext())
 
-        Timer().schedule(2000) {
+        Timer().schedule(1500) {
             dialog.dismiss()
             view.findNavController().popBackStack()
         }

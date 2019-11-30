@@ -51,7 +51,6 @@ class historyFragment :Fragment(){
                 adapter = adaptor
             }
 
-
             nav_emergency.setOnClickListener {
                 view.findNavController().popBackStack()
             }
@@ -78,11 +77,9 @@ class historyFragment :Fragment(){
             }
 
         }
-
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adaptor.notifyItemRemoved(viewHolder.adapterPosition)
-                adaptor.notifyDataSetChanged()
+                adaptor.removeAt(viewHolder.adapterPosition)
             }
         }
 

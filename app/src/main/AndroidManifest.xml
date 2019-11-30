@@ -48,10 +48,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-        <activity
-            android:name=".ui.location.LocationFragment"
-            android:label="@string/title_activity_maps" />
         <activity
             android:name=".MainActivity"
             android:label="MainActivity"
@@ -62,6 +58,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.location.LocationFragment"
+            android:label="@string/title_activity_maps" />
+
         <activity
             android:name=".FirstTime"
             android:label="@string/title_activity_first_time"
