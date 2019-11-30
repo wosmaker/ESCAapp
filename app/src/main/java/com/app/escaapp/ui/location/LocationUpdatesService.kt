@@ -36,12 +36,16 @@ class LocationUpdatesService : Service() {
      * The current location.
      */
     private var mLocation: Location? = null
+
     override fun onCreate() {
+        var spName = "App_config"
+        val sp = applicationContext.getSharedPreferences(spName, Context.MODE_PRIVATE)
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         mLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
-                onNewLocation(locationResult.lastLocation)
+                if (sp.getBoolean("gpsTrack", true)) onNewLocation(locationResult.lastLocation)
             }
         }
         createLocationRequest()
@@ -58,6 +62,7 @@ class LocationUpdatesService : Service() {
             // Set the Notification Channel for the Notification Manager.
             mNotificationManager!!.createNotificationChannel(mChannel)
         }
+
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -173,7 +178,7 @@ class LocationUpdatesService : Service() {
         return builder.build()
     }
 
-    private fun getLastLocation(){
+    private fun getLastLocation() {
         try {
             mFusedLocationClient!!.lastLocation
                     .addOnCompleteListener { task ->
