@@ -93,20 +93,20 @@
         android:id="@+id/nav_setting"
         android:layout_width="52dp"
         android:layout_height="59dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/setting"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/nav_manage" />
 
     <Button
         android:id="@+id/nav_profile"
         android:layout_width="44dp"
         android:layout_height="59dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/profile"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/nav_location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
