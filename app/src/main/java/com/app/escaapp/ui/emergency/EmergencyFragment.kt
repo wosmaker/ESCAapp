@@ -63,11 +63,11 @@ class EmergencyFragment : Fragment() {
             }
 
             btn_police.setOnClickListener {
-                callTo("0888590724")
+                callTo("911")
             }
 
             btn_hospital.setOnClickListener{
-                callTo("0888590724")
+                callTo("1669")
             }
 
             btn_relative.setOnClickListener{

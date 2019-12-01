@@ -72,6 +72,9 @@ class FirstTime: Fragment(){
         defaultCall.add(UserModel(0, "การท่องเที่ยวแห่งประเทศไทย", "1672", "", false))
         defaultCall.add(UserModel(0, "สถาบันการแพทย์ฉุกเฉินแห่งชาติ", "1669", "", false))
         defaultCall.add(UserModel(0, "ศูนย์เตือนภัยพิบัติแห่งชาติ", "1860", "", false))
+
+        defaultCall.add(UserModel(0, "Developer : esca", "0888590724", "", false))
+
         return defaultCall
     }
 }
