@@ -17,11 +17,14 @@ class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserV
     private var deleteQ = ArrayList<UserModel>()
     var edit_mode = false
 
+    lateinit var cusphone : String
+
     class UserViewHolder(val activity: Activity,itemView :View) : RecyclerView.ViewHolder(itemView) {
 
         val relate_name = itemView.relate_name
         val phone_no = itemView.phone_no
         val btn_delete = itemView.btn_delete
+        val outter = itemView.user_custom
 
     }
 
@@ -51,9 +54,11 @@ class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserV
             datasource.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position,datasource.size)
-
         }
 
+        holder.outter.setOnClickListener{
+            cusphone = datasource[position].phone_no
+        }
     }
 
     fun insertItem(newList : ArrayList<UserModel>){
@@ -86,6 +91,10 @@ class UserAdapter(val activity: Activity):RecyclerView.Adapter<UserAdapter.UserV
         oldList.clear()
         deleteQ.clear()
         notifyDataSetChanged()
+    }
+
+    fun phone(position:Int):String{
+        return datasource[position].phone_no
     }
 
 }

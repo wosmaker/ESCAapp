@@ -1,6 +1,7 @@
 package com.app.escaapp.ui.emergency
 
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -15,12 +16,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.escaapp.NavBar
 import com.app.escaapp.R
+import com.app.escaapp.ui.manage.ListAdapter
+import com.app.escaapp.ui.manage.UserAdapter
+import com.example.management.UserModel
 import com.example.management.UsersDBHelper
 import com.example.management.savehistoryModel
 import kotlinx.android.synthetic.main.fragment_emergency.view.*
 import kotlinx.android.synthetic.main.navbar_botton.view.*
+import kotlinx.android.synthetic.main.select_relate.view.*
+import kotlinx.android.synthetic.main.user_customview.view.*
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -31,6 +38,7 @@ class EmergencyFragment : Fragment() {
 
     lateinit var db: UsersDBHelper
     lateinit var sp: SharedPreferences
+    lateinit var edit : SharedPreferences.Editor
     lateinit var sp_location : SharedPreferences
 
     override fun onCreateView(
@@ -40,6 +48,7 @@ class EmergencyFragment : Fragment() {
         db = UsersDBHelper(requireContext())
         val spName = "App_config"
         sp = requireActivity().getSharedPreferences(spName, Context.MODE_PRIVATE)
+        edit = sp.edit()
         val spLocation = "location"
         sp_location = requireActivity().getSharedPreferences(spLocation, Context.MODE_PRIVATE)
 
@@ -55,8 +64,8 @@ class EmergencyFragment : Fragment() {
         }
 
 
-
         view.run{
+
             location.run {
                 text = sp_location.getString("location", "Not found")
                 invalidate()
@@ -71,7 +80,35 @@ class EmergencyFragment : Fragment() {
             }
 
             btn_relative.setOnClickListener{
-                callTo("0888590724")
+                val relate_call:String = sp.getString("relate_phone","0888590724")!!
+                callTo(relate_call)
+            }
+
+            btn_relative.setOnLongClickListener {
+                val selectview = LayoutInflater.from(requireContext()).inflate(R.layout.select_relate,null)
+                val dialog = AlertDialog.Builder(requireContext())
+                    .setView(selectview)
+                    .create()
+
+                val customContact = db.getAllCustom()
+                if (customContact.size > 0){
+                    dialog.show()
+                    selectview.run{
+                        SelectRelateView.adapter = ListAdapter(requireActivity(), R.layout.user_customview, customContact)
+                        SelectRelateView.run{
+                            setOnItemClickListener { adapterView, view, position, id ->
+                                val item = adapterView.getItemAtPosition(position) as UserModel
+                                edit.putString("relate_phone",item.phone_no).commit()
+                                dialog.dismiss()
+                            }
+                        }
+                    }
+                }
+                else{
+                    edit.putString("relate_phone","0888590724").commit()
+                    Toast.makeText(activity,"No custom relate for setup",Toast.LENGTH_LONG).show()
+                }
+                true
             }
 
             btn_callHistory.setOnClickListener{
@@ -82,7 +119,6 @@ class EmergencyFragment : Fragment() {
                 view.findNavController().navigate(R.id.emergency_callList)
             }
         }
-
     }
 
     fun callTo(phoneNumber: String){
