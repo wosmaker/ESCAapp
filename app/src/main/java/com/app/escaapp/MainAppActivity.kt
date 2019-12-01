@@ -249,6 +249,11 @@ class MainAppActivity : AppCompatActivity() {
                 editor2.putFloat("longitude",location.longitude.toFloat()).commit()
                 editor2.putString("location",addressOutput).commit()
             }
+            else{
+                editor2.putFloat("latitude",location.latitude.toFloat()).commit()
+                editor2.putFloat("longitude",location.longitude.toFloat()).commit()
+                editor2.putString("location","(Unknown location) \n latitude : ${location.latitude} \n longitude : ${location.longitude}").commit()
+            }
             fetchFinish = true
 
         }
